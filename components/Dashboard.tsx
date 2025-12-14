@@ -219,100 +219,74 @@ export function Dashboard({ session }: DashboardProps) {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header
-        username={session?.username}
-        avatarUrl={session?.user?.image || undefined}
-      />
+    <>
+      {/* Controls */}
+      <div className="flex flex-wrap items-center gap-6 mb-6">
+        <YearSelector
+          selectedYear={selectedYear}
+          onYearChange={setSelectedYear}
+          accountCreatedYear={session?.accountCreatedYear}
+        />
+        <ColorPicker
+          selectedIntensity={currentIntensity}
+          onIntensityChange={setCurrentIntensity}
+        />
+      </div>
 
-      <main className="flex-1 max-w-6xl mx-auto w-full px-6 py-8">
-        {/* Controls */}
-        <div className="flex flex-wrap items-center gap-6 mb-6">
-          <YearSelector
-            selectedYear={selectedYear}
-            onYearChange={setSelectedYear}
-            accountCreatedYear={session?.accountCreatedYear}
-          />
-          <ColorPicker
-            selectedIntensity={currentIntensity}
-            onIntensityChange={setCurrentIntensity}
-          />
-        </div>
+      {/* Contribution Graph */}
+      <div className="mb-6">
+        <ContributionGraph
+          weeks={weeks}
+          selectedCells={selectedCells}
+          onCellToggle={handleCellToggle}
+          currentIntensity={currentIntensity}
+          isLoading={isLoadingGraph}
+        />
+      </div>
 
-        {/* Contribution Graph */}
-        <div className="mb-6">
-          <ContributionGraph
-            weeks={weeks}
-            selectedCells={selectedCells}
-            onCellToggle={handleCellToggle}
-            currentIntensity={currentIntensity}
-            isLoading={isLoadingGraph}
-          />
-        </div>
-
-        {/* Selection info */}
-        {selectedCells.size > 0 && (
-          <div className="mb-6 p-4 bg-surface-raised rounded-lg border border-border">
-            <div className="flex items-center justify-between">
-              <div className="text-text-muted text-sm">
-                <span className="font-medium text-text">
-                  {selectedCells.size}
-                </span>{" "}
-                cells selected
-              </div>
-              <button
-                onClick={() => setSelectedCells(new Map())}
-                className="text-text-muted text-sm hover:text-text transition-colors"
-              >
-                Clear selection
-              </button>
+      {/* Selection info */}
+      {selectedCells.size > 0 && (
+        <div className="mb-6 p-4 bg-surface-raised rounded-lg border border-border">
+          <div className="flex items-center justify-between">
+            <div className="text-text-muted text-sm">
+              <span className="font-medium text-text">
+                {selectedCells.size}
+              </span>{" "}
+              cells selected
             </div>
-          </div>
-        )}
-
-        {/* Repository selection and paint button */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 p-5 bg-surface-raised rounded-lg border border-border">
-          {/* Left side: Repository and Commit Mode */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-            <RepoSelector
-              repositories={repositories}
-              selectedRepo={selectedRepo}
-              onRepoChange={setSelectedRepo}
-              isLoading={isLoadingRepos}
-            />
-            <CommitModeToggle mode={commitMode} onModeChange={setCommitMode} />
-          </div>
-
-          {/* Right side: Paint Button */}
-          <div className="flex items-center justify-center sm:justify-end lg:items-center pt-2 sm:pt-0">
-            <PaintButton
-              onClick={handlePaint}
-              disabled={!selectedRepo || selectedCells.size === 0}
-              selectedCount={selectedCells.size}
-            />
+            <button
+              onClick={() => setSelectedCells(new Map())}
+              className="text-text-muted text-sm hover:text-text transition-colors"
+            >
+              Clear selection
+            </button>
           </div>
         </div>
+      )}
 
-        <ColorGuide />
-
-        {/* Tips */}
-        <div className="mt-6 p-4 bg-surface-overlay/50 rounded-lg border border-border-muted">
-          <h3 className="text-sm font-medium text-text mb-2">Tips</h3>
-          <ul className="text-xs text-text-muted space-y-1">
-            <li>• Click and drag to select multiple cells at once</li>
-            <li>• Use intensity 0 (clear) to remove existing selections</li>
-            <li>
-              • Create a dedicated repository for your art to avoid cluttering
-              real projects
-            </li>
-            <li>
-              • Commits may take a few minutes to appear on your GitHub profile
-            </li>
-          </ul>
+      {/* Repository selection and paint button */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 p-5 bg-surface-raised rounded-lg border border-border">
+        {/* Left side: Repository and Commit Mode */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+          <RepoSelector
+            repositories={repositories}
+            selectedRepo={selectedRepo}
+            onRepoChange={setSelectedRepo}
+            isLoading={isLoadingRepos}
+          />
+          <CommitModeToggle mode={commitMode} onModeChange={setCommitMode} />
         </div>
-      </main>
 
-      {/* Progress Modal */}
+        {/* Right side: Paint Button */}
+        <div className="flex items-center justify-center sm:justify-end lg:items-center pt-2 sm:pt-0">
+          <PaintButton
+            onClick={handlePaint}
+            disabled={!selectedRepo || selectedCells.size === 0}
+            selectedCount={selectedCells.size}
+          />
+        </div>
+      </div>
+
       <ProgressModal
         isOpen={isPainting}
         progress={paintProgress}
@@ -322,6 +296,6 @@ export function Dashboard({ session }: DashboardProps) {
         onClose={handleModalClose}
         onViewProfile={handleViewProfile}
       />
-    </div>
+    </>
   );
 }
