@@ -50,15 +50,17 @@ See [GITHUB_SETUP.md](./GITHUB_SETUP.md) for OAuth app configuration.
 
 GitHub uses percentiles based on your personal max contributions, not fixed thresholds. The app targets these commit counts per intensity:
 
-| Level | Target commits | Color        |
-| ----- | -------------- | ------------ |
-| 0     | 0              | Gray         |
-| 1     | 1              | Light green  |
-| 2     | 5              | Medium green |
-| 3     | 10             | Green        |
-| 4     | 15             | Dark green   |
+| Level | Color        | Description       | Target Commits |
+| ----- | ------------ | ----------------- | -------------- |
+| 0     | Gray         | No contributions  | 0              |
+| 1     | Light Green  | Low activity      | 1              |
+| 2     | Medium Green | Moderate activity | 5              |
+| 3     | High Green   | High activity     | 10             |
+| 4     | Max Green    | Maximum activity  | 15             |
 
 If a cell already has contributions, the app calculates the delta needed.
+
+> **Important**: GitHub uses a **relative percentile-based system** to determine colors, which means the colors you see in the app may not be a 100% accurate reflection of what appears on your GitHub profile. Colors are calculated based on your personal maximum daily contributions, so the same number of commits might appear differently depending on your overall activity level. The tool targets specific commit counts to achieve each color level, but slight variations may occur.
 
 ## Stack
 

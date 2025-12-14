@@ -91,54 +91,6 @@ When deploying to production:
 2. Update the **Authorization callback URL** to `https://yourdomain.com/api/auth/callback/github`
 3. Update `NEXTAUTH_URL` in your environment variables to your production URL
 
-## Contribution Graph Color Levels
-
-GitHub's contribution graph uses **relative percentile-based coloring**. The intensity of each color is based on YOUR personal maximum daily contributions over the past year, divided into quartiles.
-
-### How GitHub Calculates Colors
-
-| Level | Color        | Percentile Range       | Description       |
-| ----- | ------------ | ---------------------- | ----------------- |
-| 0     | Gray         | 0 contributions        | No activity       |
-| 1     | Light Green  | 1% - 25% of your max   | Low activity      |
-| 2     | Medium Green | 25% - 50% of your max  | Moderate activity |
-| 3     | High Green   | 50% - 75% of your max  | High activity     |
-| 4     | Dark Green   | 75% - 100% of your max | Maximum activity  |
-
-### Target Commits Used by Contribu-Art
-
-Since the levels are relative, Contribu-Art uses target commit counts designed to reliably achieve each color level:
-
-| Level | Target Commits | Effect                                            |
-| ----- | -------------- | ------------------------------------------------- |
-| 0     | 0              | Clear (cannot remove existing commits)            |
-| 1     | 1              | Ensures at least light green                      |
-| 2     | 5              | Pushes into 2nd quartile for most users           |
-| 3     | 10             | Pushes into 3rd quartile for most users           |
-| 4     | 15             | Pushes into 4th quartile (darkest) for most users |
-
-### Smart Commit Calculation
-
-Contribu-Art considers your **existing contributions** when painting:
-
-| You Want | Existing Commits | Target | Commits Added |
-| -------- | ---------------- | ------ | ------------- |
-| Level 1  | 0                | 1      | 1             |
-| Level 2  | 2                | 5      | 3             |
-| Level 3  | 5                | 10     | 5             |
-| Level 4  | 8                | 15     | 7             |
-| Level 2  | 6                | 5      | 0 (skip)      |
-| Level 3  | 12               | 10     | 0 (skip)      |
-
-> **Note**: If your existing contributions already meet or exceed the target, no additional commits are created for that cell.
-
-### Official GitHub Documentation
-
-For authoritative information on how contributions are counted and displayed:
-
-- [Viewing contributions on your profile](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/viewing-contributions-on-your-profile)
-- [Why are my contributions not showing up?](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/why-are-my-contributions-not-showing-up-on-my-profile)
-
 ## Troubleshooting
 
 ### "OAuth App access restrictions"

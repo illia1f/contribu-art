@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Header } from "./Header";
 import { YearSelector } from "./YearSelector";
 import { ColorPicker } from "./ColorPicker";
+import { ColorGuide } from "./ColorGuide";
 import { RepoSelector } from "./RepoSelector";
 import { ContributionGraph, ContributionWeek } from "./ContributionGraph";
 import { PaintButton } from "./PaintButton";
@@ -169,7 +170,7 @@ export function Dashboard({ session }: DashboardProps) {
               if (data.done) {
                 setPaintDone(true);
               }
-            } catch (e) {
+            } catch {
               // Ignore parse errors
             }
           }
@@ -292,8 +293,10 @@ export function Dashboard({ session }: DashboardProps) {
           </div>
         </div>
 
+        <ColorGuide />
+
         {/* Tips */}
-        <div className="mt-8 p-4 bg-surface-overlay/50 rounded-lg border border-border-muted">
+        <div className="mt-6 p-4 bg-surface-overlay/50 rounded-lg border border-border-muted">
           <h3 className="text-sm font-medium text-text mb-2">Tips</h3>
           <ul className="text-xs text-text-muted space-y-1">
             <li>• Click and drag to select multiple cells at once</li>
