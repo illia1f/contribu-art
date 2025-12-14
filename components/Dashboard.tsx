@@ -9,7 +9,7 @@ import { ContributionGraph, ContributionWeek } from "./ContributionGraph";
 import { PaintButton } from "./PaintButton";
 import { ProgressModal } from "./ProgressModal";
 import { CommitModeToggle, type CommitMode } from "./CommitModeToggle";
-import type { Repository } from "../api/repos/route";
+import type { Repository } from "../app/api/repos/route";
 import type { Session } from "next-auth";
 
 interface DashboardProps {

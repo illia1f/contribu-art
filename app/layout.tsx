@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Inter } from "next/font/google";
-import { Providers } from "./components/Providers";
+import { Providers } from "../components/Providers";
+import { baseMetadata } from "@/config/metadata";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,18 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Contribu-Art | Paint Your GitHub Graph",
-  description:
-    "Create art on your GitHub contribution graph by selecting cells and painting them with commits.",
-  keywords: [
-    "GitHub",
-    "contribution graph",
-    "art",
-    "commits",
-    "developer tools",
-  ],
-};
+export const metadata: Metadata = baseMetadata;
 
 export default function RootLayout({
   children,

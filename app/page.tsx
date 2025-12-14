@@ -1,12 +1,15 @@
+import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { LandingPage } from "./components/LandingPage";
-import { Dashboard } from "./components/Dashboard";
+import { Dashboard } from "@/components/Dashboard";
+import { homeMetadata } from "@/config/metadata";
+
+export const metadata = homeMetadata;
 
 export default async function Home() {
   const session = await auth();
 
   if (!session) {
-    return <LandingPage />;
+    redirect("/auth");
   }
 
   return <Dashboard session={session} />;
