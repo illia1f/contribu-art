@@ -4,6 +4,7 @@ import { ImageIcon } from "@/components/icons/ImageIcon";
 import { ClockIcon } from "@/components/icons/ClockIcon";
 import { ShieldIcon } from "@/components/icons/ShieldIcon";
 import { authMetadata } from "@/config/metadata";
+import { Logo } from "@/components/Logo";
 import { ReactNode } from "react";
 
 export const metadata = authMetadata;
@@ -19,8 +20,8 @@ export default function AuthPage() {
           <div className="bg-surface-raised border border-border rounded-xl p-8 shadow-lg">
             {/* Logo */}
             <div className="text-center mb-8">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-contrib-2 to-contrib-4 flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🎨</span>
+              <div className="flex justify-center mb-4">
+                <Logo size={124} />
               </div>
               <h2 className="text-2xl font-bold text-text mb-2">
                 Welcome Back

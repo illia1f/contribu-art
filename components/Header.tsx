@@ -3,6 +3,7 @@
 import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { SignOutIcon } from "@/components/icons/SignOutIcon";
+import { Logo } from "@/components/Logo";
 
 interface HeaderProps {
   username?: string;
@@ -12,15 +13,8 @@ interface HeaderProps {
 export function Header({ username, avatarUrl }: HeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-surface-raised">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded bg-gradient-to-br from-contrib-2 to-contrib-4 flex items-center justify-center">
-            <span className="text-lg">🎨</span>
-          </div>
-          <h1 className="text-xl font-bold text-text tracking-tight">
-            Contribu-Art
-          </h1>
-        </div>
+      <div className="max-w-6xl mx-auto px-6 py-2 flex items-center justify-between">
+        <Logo size={54} withText />
 
         {username && (
           <div className="flex items-center gap-4">
