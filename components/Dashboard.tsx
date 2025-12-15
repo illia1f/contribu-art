@@ -11,6 +11,9 @@ import { CreateRepoModal } from "./CreateRepoModal";
 import { CommitModeToggle, type CommitMode } from "./CommitModeToggle";
 import type { Repository } from "../app/api/repos/route";
 import type { Session } from "next-auth";
+import { fetchContributions } from "@/services/contributions";
+import { fetchRepositories } from "@/services/repos";
+import { paintContributions } from "@/services/paint";
 
 interface DashboardProps {
   session: Session;
@@ -45,14 +48,11 @@ export function Dashboard({ session }: DashboardProps) {
 
   // Fetch contributions when year changes
   useEffect(() => {
-    const fetchContributions = async () => {
+    const loadContributions = async () => {
       setIsLoadingGraph(true);
       try {
-        const res = await fetch(`/api/contributions?year=${selectedYear}`);
-        if (res.ok) {
-          const data = await res.json();
-          setWeeks(data.weeks || []);
-        }
+        const data = await fetchContributions(selectedYear);
+        setWeeks(data.weeks || []);
       } catch (error) {
         console.error("Failed to fetch contributions:", error);
       } finally {
@@ -60,21 +60,18 @@ export function Dashboard({ session }: DashboardProps) {
       }
     };
 
-    fetchContributions();
+    loadContributions();
     // Clear selections when year changes
     setSelectedCells(new Map());
   }, [selectedYear]);
 
   // Fetch repositories on mount
   useEffect(() => {
-    const fetchRepos = async () => {
+    const loadRepositories = async () => {
       setIsLoadingRepos(true);
       try {
-        const res = await fetch("/api/repos");
-        if (res.ok) {
-          const data = await res.json();
-          setRepositories(data);
-        }
+        const data = await fetchRepositories();
+        setRepositories(data);
       } catch (error) {
         console.error("Failed to fetch repositories:", error);
       } finally {
@@ -82,7 +79,7 @@ export function Dashboard({ session }: DashboardProps) {
       }
     };
 
-    fetchRepos();
+    loadRepositories();
   }, []);
 
   // Handle cell toggle
@@ -128,64 +125,30 @@ export function Dashboard({ session }: DashboardProps) {
     setPaintMessage("Initializing...");
     setPaintDone(false);
 
+    let lastProgress = 0;
+    let lastTotal = 0;
+    let receivedDone = false;
+
     try {
-      const response = await fetch("/api/paint", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      await paintContributions(
+        {
           owner,
           repo,
           cells,
           incremental: commitMode === "incremental",
-        }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        setPaintMessage(`Error: ${error.error || "Failed to start painting"}`);
-        setPaintDone(true);
-        return;
-      }
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-
-      if (!reader) {
-        setPaintMessage("Error: No response stream");
-        setPaintDone(true);
-        return;
-      }
-
-      let receivedDone = false;
-      let lastProgress = 0;
-      let lastTotal = 0;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split("\n");
-
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            try {
-              const data = JSON.parse(line.slice(6));
-              lastProgress = data.progress || 0;
-              lastTotal = data.total || 0;
-              setPaintProgress(lastProgress);
-              setPaintTotal(lastTotal);
-              setPaintMessage(data.message || "");
-              if (data.done) {
-                receivedDone = true;
-                setPaintDone(true);
-              }
-            } catch {
-              // Ignore parse errors
-            }
+        },
+        (progress) => {
+          lastProgress = progress.progress || 0;
+          lastTotal = progress.total || 0;
+          setPaintProgress(lastProgress);
+          setPaintTotal(lastTotal);
+          setPaintMessage(progress.message || "");
+          if (progress.done) {
+            receivedDone = true;
+            setPaintDone(true);
           }
         }
-      }
+      );
 
       // If stream ended without a proper "done" message, it likely means
       // a network error occurred (ECONNRESET, timeout, etc.)
@@ -227,21 +190,18 @@ export function Dashboard({ session }: DashboardProps) {
       // Clear selections after successful paint
       setSelectedCells(new Map());
       // Refresh the graph
-      const fetchContributions = async () => {
+      const loadContributions = async () => {
         setIsLoadingGraph(true);
         try {
-          const res = await fetch(`/api/contributions?year=${selectedYear}`);
-          if (res.ok) {
-            const data = await res.json();
-            setWeeks(data.weeks || []);
-          }
+          const data = await fetchContributions(selectedYear);
+          setWeeks(data.weeks || []);
         } catch (error) {
           console.error("Failed to fetch contributions:", error);
         } finally {
           setIsLoadingGraph(false);
         }
       };
-      fetchContributions();
+      loadContributions();
     }
   };
 

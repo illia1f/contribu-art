@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import type { Repository } from "@/app/api/repos/route";
+import { createRepository } from "@/services/repos";
 
 interface CreateRepoModalProps {
   isOpen: boolean;
@@ -43,23 +44,7 @@ export function CreateRepoModal({
     setIsCreating(true);
 
     try {
-      const response = await fetch("/api/repos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: repoName.trim(),
-          private: isPrivate,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.error || "Failed to create repository");
-        setIsCreating(false);
-        return;
-      }
-
+      const data = await createRepository(repoName, isPrivate);
       // Success - call onSuccess callback
       onSuccess(data);
     } catch (err) {
