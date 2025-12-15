@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, getTargetCommitsForIntensity } from "@/lib/utils";
 
 interface ColorPickerProps {
   selectedIntensity: number;
@@ -23,15 +23,6 @@ const intensityLabels: Record<number, string> = {
   4: "Max",
 };
 
-// Target commits to reach each level (accounts for existing contributions)
-const targetCommits: Record<number, number> = {
-  0: 0,
-  1: 1,
-  2: 5,
-  3: 10,
-  4: 15,
-};
-
 export function ColorPicker({
   selectedIntensity,
   onIntensityChange,
@@ -44,7 +35,9 @@ export function ColorPicker({
           <button
             key={intensity}
             onClick={() => onIntensityChange(intensity)}
-            title={`${intensityLabels[intensity]} (target: ${targetCommits[intensity]} commits)`}
+            title={`${
+              intensityLabels[intensity]
+            } (target: ${getTargetCommitsForIntensity(intensity)} commits)`}
             className={cn(
               "w-7 h-7 rounded-sm transition-all duration-150",
               intensityColors[intensity],
@@ -56,8 +49,8 @@ export function ColorPicker({
         ))}
       </div>
       <span className="text-text-subtle text-xs">
-        {intensityLabels[selectedIntensity]} ({targetCommits[selectedIntensity]}{" "}
-        commits)
+        {intensityLabels[selectedIntensity]} (
+        {getTargetCommitsForIntensity(selectedIntensity)} commits)
       </span>
     </div>
   );

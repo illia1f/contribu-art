@@ -9,7 +9,7 @@ export function GitHubSignInButton() {
     <button
       onClick={() => signIn("github", { callbackUrl: "/" })}
       className={cn(
-        "w-full flex items-center justify-center gap-3 px-6 py-3 rounded-lg",
+        "cursor-pointer w-full flex items-center justify-center gap-3 px-6 py-3 rounded-lg",
         "bg-[#24292f] hover:bg-[#32383f]",
         "border border-border",
         "transition-all duration-200",

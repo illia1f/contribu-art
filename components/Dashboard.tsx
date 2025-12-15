@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Header } from "./Header";
 import { YearSelector } from "./YearSelector";
 import { ColorPicker } from "./ColorPicker";
-import { ColorGuide } from "./ColorGuide";
 import { RepoSelector } from "./RepoSelector";
 import { ContributionGraph, ContributionWeek } from "./ContributionGraph";
 import { PaintButton } from "./PaintButton";
 import { ProgressModal } from "./ProgressModal";
+import { CreateRepoModal } from "./CreateRepoModal";
 import { CommitModeToggle, type CommitMode } from "./CommitModeToggle";
 import type { Repository } from "../app/api/repos/route";
 import type { Session } from "next-auth";
@@ -39,6 +38,9 @@ export function Dashboard({ session }: DashboardProps) {
   const [paintTotal, setPaintTotal] = useState(0);
   const [paintMessage, setPaintMessage] = useState("");
   const [paintDone, setPaintDone] = useState(false);
+
+  // Create repo modal state
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
   // Fetch contributions when year changes
   useEffect(() => {
@@ -153,6 +155,10 @@ export function Dashboard({ session }: DashboardProps) {
         return;
       }
 
+      let receivedDone = false;
+      let lastProgress = 0;
+      let lastTotal = 0;
+
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
@@ -164,10 +170,13 @@ export function Dashboard({ session }: DashboardProps) {
           if (line.startsWith("data: ")) {
             try {
               const data = JSON.parse(line.slice(6));
-              setPaintProgress(data.progress || 0);
-              setPaintTotal(data.total || 0);
+              lastProgress = data.progress || 0;
+              lastTotal = data.total || 0;
+              setPaintProgress(lastProgress);
+              setPaintTotal(lastTotal);
               setPaintMessage(data.message || "");
               if (data.done) {
+                receivedDone = true;
                 setPaintDone(true);
               }
             } catch {
@@ -176,11 +185,36 @@ export function Dashboard({ session }: DashboardProps) {
           }
         }
       }
+
+      // If stream ended without a proper "done" message, it likely means
+      // a network error occurred (ECONNRESET, timeout, etc.)
+      if (!receivedDone) {
+        const progressInfo =
+          lastTotal > 0
+            ? ` (${lastProgress}/${lastTotal} commits completed)`
+            : "";
+        setPaintMessage(
+          `Error: Connection lost during painting${progressInfo}. Please try again - completed commits are saved.`
+        );
+        setPaintDone(true);
+      }
     } catch (error) {
       console.error("Paint error:", error);
-      setPaintMessage(
-        `Error: ${error instanceof Error ? error.message : "Unknown error"}`
-      );
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
+      // Provide more user-friendly messages for common network errors
+      let friendlyMessage = errorMessage;
+      if (
+        errorMessage.includes("ECONNRESET") ||
+        errorMessage.includes("fetch failed")
+      ) {
+        friendlyMessage =
+          "Connection to GitHub was lost. Please check your internet and try again.";
+      } else if (errorMessage.includes("ETIMEDOUT")) {
+        friendlyMessage =
+          "Request timed out. GitHub may be slow - please try again.";
+      }
+      setPaintMessage(`Error: ${friendlyMessage}`);
       setPaintDone(true);
     }
   };
@@ -216,6 +250,16 @@ export function Dashboard({ session }: DashboardProps) {
       window.open(`https://github.com/${session.username}`, "_blank");
     }
     handleModalClose();
+  };
+
+  // Handle repository creation success
+  const handleRepoCreated = (newRepo: Repository) => {
+    // Prepend new repo to the list
+    setRepositories((prev) => [newRepo, ...prev]);
+    // Select the newly created repo
+    setSelectedRepo(newRepo.full_name);
+    // Close the modal
+    setShowCreateModal(false);
   };
 
   return (
@@ -273,6 +317,7 @@ export function Dashboard({ session }: DashboardProps) {
             selectedRepo={selectedRepo}
             onRepoChange={setSelectedRepo}
             isLoading={isLoadingRepos}
+            onCreateClick={() => setShowCreateModal(true)}
           />
           <CommitModeToggle mode={commitMode} onModeChange={setCommitMode} />
         </div>
@@ -286,6 +331,13 @@ export function Dashboard({ session }: DashboardProps) {
           />
         </div>
       </div>
+
+      <CreateRepoModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={handleRepoCreated}
+        defaultName="contribu-art-graph"
+      />
 
       <ProgressModal
         isOpen={isPainting}
