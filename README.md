@@ -2,7 +2,7 @@
 
 A web app for painting on your GitHub contribution graph by creating backdated commits.
 
-<!-- TODO: Add screenshot or demo GIF here -->
+![Example: GitHub contribution graph showing "2019" painted in green squares](/illia1f-graph-2019jpg.jpg)
 
 ## What it does
 

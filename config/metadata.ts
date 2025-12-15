@@ -11,7 +11,8 @@ const baseKeywords = [
   "developer tools",
 ];
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://contribu-art.com";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://green-contribu-art.vercel.app";
 
 /**
  * Base metadata shared across all pages
