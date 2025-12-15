@@ -12,6 +12,7 @@ interface RepoSelectorProps {
   selectedRepo: string | null;
   onRepoChange: (repo: string) => void;
   isLoading?: boolean;
+  onCreateClick?: () => void;
 }
 
 export function RepoSelector({
@@ -19,6 +20,7 @@ export function RepoSelector({
   selectedRepo,
   onRepoChange,
   isLoading,
+  onCreateClick,
 }: RepoSelectorProps) {
   const [open, setOpen] = useState(false);
 
@@ -58,9 +60,23 @@ export function RepoSelector({
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs text-muted-foreground font-medium">
-        Repository
-      </label>
+      <div className="flex items-center justify-between">
+        <label className="text-xs text-muted-foreground font-medium">
+          Repository
+        </label>
+        {onCreateClick && (
+          <button
+            type="button"
+            onClick={onCreateClick}
+            className={cn(
+              "text-xs text-accent hover:text-accent/80 font-medium",
+              "transition-colors"
+            )}
+          >
+            + Create New
+          </button>
+        )}
+      </div>
       <Combobox.Root
         items={items}
         value={selectedRepo ?? null}

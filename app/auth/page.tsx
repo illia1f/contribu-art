@@ -4,6 +4,7 @@ import { ImageIcon } from "@/components/icons/ImageIcon";
 import { ClockIcon } from "@/components/icons/ClockIcon";
 import { ShieldIcon } from "@/components/icons/ShieldIcon";
 import { authMetadata } from "@/config/metadata";
+import { ReactNode } from "react";
 
 export const metadata = authMetadata;
 
@@ -12,7 +13,6 @@ export default function AuthPage() {
     <div className="min-h-screen flex flex-col bg-surface">
       <Header />
 
-      {/* Main Content */}
       <main className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-md">
           {/* Card */}
@@ -30,7 +30,6 @@ export default function AuthPage() {
               </p>
             </div>
 
-            {/* Sign in button */}
             <GitHubSignInButton />
 
             {/* Divider */}
@@ -52,29 +51,35 @@ export default function AuthPage() {
             </p>
           </div>
 
-          {/* Features */}
           <div className="mt-8 grid grid-cols-3 gap-4 text-center">
-            <div className="p-3">
-              <div className="w-10 h-10 rounded-lg bg-surface-raised border border-border flex items-center justify-center mx-auto mb-2">
-                <ImageIcon className="w-5 h-5 text-contrib-3" />
-              </div>
-              <p className="text-xs text-text-muted">Create Art</p>
-            </div>
-            <div className="p-3">
-              <div className="w-10 h-10 rounded-lg bg-surface-raised border border-border flex items-center justify-center mx-auto mb-2">
-                <ClockIcon className="w-5 h-5 text-contrib-3" />
-              </div>
-              <p className="text-xs text-text-muted">Quick Paint</p>
-            </div>
-            <div className="p-3">
-              <div className="w-10 h-10 rounded-lg bg-surface-raised border border-border flex items-center justify-center mx-auto mb-2">
-                <ShieldIcon className="w-5 h-5 text-contrib-3" />
-              </div>
-              <p className="text-xs text-text-muted">Secure</p>
-            </div>
+            <FeatureItem label="Create Art">
+              <ImageIcon className="size-5 text-contrib-3" />
+            </FeatureItem>
+            <FeatureItem label="Quick Paint">
+              <ClockIcon className="size-5 text-contrib-3" />
+            </FeatureItem>
+            <FeatureItem label="Secure">
+              <ShieldIcon className="size-5 text-contrib-3" />
+            </FeatureItem>
           </div>
         </div>
       </main>
+    </div>
+  );
+}
+
+interface FeatureItemProps {
+  label: string;
+  children: ReactNode;
+}
+
+function FeatureItem({ children, label }: FeatureItemProps) {
+  return (
+    <div className="p-3">
+      <div className="w-10 h-10 rounded-lg bg-surface-raised border border-border flex items-center justify-center mx-auto mb-2">
+        {children}
+      </div>
+      <p className="text-xs text-text-muted">{label}</p>
     </div>
   );
 }
