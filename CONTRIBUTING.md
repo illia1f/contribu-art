@@ -96,8 +96,9 @@ The scope provides additional context about what part of the codebase is affecte
 1. **Use lowercase** for the type and scope
 2. **Use imperative mood** in the description ("add" not "added" or "adds")
 3. **Don't end** the description with a period
-4. **Keep the header** under 72 characters
+4. **Keep the header** under 100 characters
 5. **Separate** the body from the header with a blank line
+6. **Body line length** is not enforced (no maximum limit)
 
 ## Getting Started
 
