@@ -41,6 +41,7 @@ export function Dashboard({ session }: DashboardProps) {
 
   // Create repo modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createModalKey, setCreateModalKey] = useState(0);
 
   // Fetch contributions when year changes
   useEffect(() => {
@@ -317,7 +318,10 @@ export function Dashboard({ session }: DashboardProps) {
             selectedRepo={selectedRepo}
             onRepoChange={setSelectedRepo}
             isLoading={isLoadingRepos}
-            onCreateClick={() => setShowCreateModal(true)}
+            onCreateClick={() => {
+              setCreateModalKey((k) => k + 1);
+              setShowCreateModal(true);
+            }}
           />
           <CommitModeToggle mode={commitMode} onModeChange={setCommitMode} />
         </div>
@@ -333,6 +337,7 @@ export function Dashboard({ session }: DashboardProps) {
       </div>
 
       <CreateRepoModal
+        key={createModalKey}
         isOpen={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         onSuccess={handleRepoCreated}

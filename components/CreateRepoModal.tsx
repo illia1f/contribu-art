@@ -17,20 +17,11 @@ export function CreateRepoModal({
   onSuccess,
   defaultName = "contribu-art-graph",
 }: CreateRepoModalProps) {
+  // State is initialized fresh - parent uses key prop to reset on open
   const [repoName, setRepoName] = useState(defaultName);
   const [isPrivate, setIsPrivate] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Reset form when modal opens/closes
-  useEffect(() => {
-    if (isOpen) {
-      setRepoName(defaultName);
-      setIsPrivate(false);
-      setError(null);
-      setIsCreating(false);
-    }
-  }, [isOpen, defaultName]);
 
   // Close on Escape key
   useEffect(() => {
