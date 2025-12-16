@@ -32,10 +32,19 @@ export const baseMetadata: Metadata = {
     locale: "en_US",
     siteName,
     description: siteDescription,
+    images: [
+      {
+        url: "/contribu-art-logo-tp.svg",
+        width: 1200,
+        height: 630,
+        alt: siteName,
+      },
+    ],
   },
   twitter: {
     card: "summary",
     creator: "@contribu-art",
+    images: ["/contribu-art-logo-tp.svg"],
   },
   robots: {
     index: true,
