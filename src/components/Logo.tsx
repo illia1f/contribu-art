@@ -14,17 +14,28 @@ interface LogoProps {
    * Whether to show the logo with text label. Defaults to false.
    */
   withText?: boolean;
+  /**
+   * Variant of the logo to display. "default" uses contribu-art-logo-tp.svg, "simple" uses contribu-art-simple-logo.svg. Defaults to "default".
+   */
+  variant?: "default" | "simple";
 }
 
-export function Logo({ size = 32, className, withText = false }: LogoProps) {
+export function Logo({
+  size = 32,
+  className,
+  withText = false,
+  variant = "default",
+}: LogoProps) {
+  const logoSrc =
+    variant === "simple"
+      ? "/contribu-art-simple-logo.svg"
+      : "/contribu-art-logo-tp.svg";
+
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      <div
-        className="relative flex-shrink-0"
-        style={{ width: size, height: size }}
-      >
+      <div className="relative shrink-0" style={{ width: size, height: size }}>
         <Image
-          src="/contribu-art-logo-tp.png"
+          src={logoSrc}
           alt="Contribu-Art Logo"
           width={size}
           height={size}
@@ -40,4 +51,3 @@ export function Logo({ size = 32, className, withText = false }: LogoProps) {
     </div>
   );
 }
-

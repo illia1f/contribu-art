@@ -4,6 +4,7 @@ import { signOut } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { SignOutIcon } from "@/components/icons/SignOutIcon";
 import { Logo } from "@/components/Logo";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface HeaderProps {
   username?: string;
@@ -11,10 +12,12 @@ interface HeaderProps {
 }
 
 export function Header({ username, avatarUrl }: HeaderProps) {
+  const isMobile = useIsMobile();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-surface-raised">
       <div className="max-w-6xl mx-auto px-6 py-2 flex items-center justify-between">
-        <Logo size={54} withText />
+        <Logo size={54} withText={!isMobile} variant="simple" />
 
         {username && (
           <div className="flex items-center gap-4">
