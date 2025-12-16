@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Inter } from "next/font/google";
-import { Providers } from "../components/Providers";
+import { Providers } from "@/components/Providers";
 import { baseMetadata } from "@/config/metadata";
 import "./globals.css";
 
