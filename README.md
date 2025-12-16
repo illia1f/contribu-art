@@ -4,6 +4,8 @@ A web app for painting on your GitHub contribution graph by creating backdated c
 
 ![Example: GitHub contribution graph showing "2019" painted in green squares](./public/illia1f-graph-2019jpg.jpg)
 
+![Example: GitHub contribution graph showing "DUMPLING" painted in green squares](./public/dumpling-graph.jpg)
+
 ## What it does
 
 Select cells on a replica of your contribution graph, pick an intensity level, and the app creates commits with the appropriate dates to "paint" those cells green. Useful for pixel art, writing messages, or just making your profile look less empty.
