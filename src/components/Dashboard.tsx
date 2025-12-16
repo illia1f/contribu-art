@@ -9,7 +9,7 @@ import { PaintButton } from "./PaintButton";
 import { ProgressModal } from "./ProgressModal";
 import { CreateRepoModal } from "./CreateRepoModal";
 import { CommitModeToggle, type CommitMode } from "./CommitModeToggle";
-import type { Repository } from "../app/api/repos/route";
+import type { Repository } from "@/app/api/repos/route";
 import type { Session } from "next-auth";
 import { fetchContributions } from "@/services/contributions";
 import { fetchRepositories } from "@/services/repos";
