@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { IconLoader2 } from "@tabler/icons-react";
+import { Spinner } from "@/components/ui/spinner";
 
 export function GitHubSignInButton({ className }: { className?: string }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,12 +34,12 @@ export function GitHubSignInButton({ className }: { className?: string }) {
       )}
     >
       {isLoading ? (
-        <IconLoader2 className="size-5 animate-spin text-white/80" />
+        <Spinner className="size-5 text-white/80" />
       ) : (
         <GitHubIcon className="size-5" />
       )}
       <span className="transition-all duration-300">
-        {isLoading ? "Connecting..." : "Continue with GitHub"}
+        {isLoading ? "Connecting" : "Continue with GitHub"}
       </span>
     </Button>
   );
