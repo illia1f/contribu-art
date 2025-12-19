@@ -58,7 +58,7 @@ export function ColorGuide() {
               className="bg-popover/50 border-border-muted flex items-start gap-3 rounded border p-3"
             >
               <div
-                className={`h-6 w-6 rounded-sm ${level.colorClass} border-border-muted mt-0.5 shrink-0 border`}
+                className={`h-6 w-6 rounded-sm ${level.colorClass} border-border-muted mt-0.5 shrink-0 border ring-1 ring-white/20 ring-inset`}
               ></div>
               <div className="min-w-0 flex-1">
                 <div className="text-foreground mb-1 text-xs font-medium">

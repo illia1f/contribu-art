@@ -39,11 +39,11 @@ export function ColorPicker({
               intensityLabels[intensity]
             } (target: ${getTargetCommitsForIntensity(intensity)} commits)`}
             className={cn(
-              "h-7 w-7 rounded-sm transition-all duration-150",
+              "h-7 w-7 rounded-sm ring-1 ring-white/20 transition-all duration-150 ring-inset",
               intensityColors[intensity],
               selectedIntensity === intensity
-                ? "ring-offset-surface scale-110 ring-2 ring-white ring-offset-2"
-                : "hover:ring-text-muted hover:ring-1"
+                ? "ring-offset-background scale-110 ring-2 ring-white ring-offset-2"
+                : "hover:ring-white/50"
             )}
           />
         ))}
