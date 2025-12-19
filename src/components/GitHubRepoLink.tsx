@@ -35,22 +35,22 @@ export function GitHubRepoLink({ className }: GitHubRepoLinkProps) {
       rel="noopener noreferrer"
       className={cn(
         "flex items-center gap-2",
-        "px-3 py-2 rounded-lg",
-        "border border-border bg-surface-raised",
+        "rounded-lg px-3 py-2",
+        "border-border bg-surface-raised border",
         "transition-all duration-200",
         "hover:bg-surface hover:border-primary/50",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised",
+        "focus-visible:ring-primary focus-visible:ring-offset-surface-raised focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         className
       )}
       aria-label={`View ${githubRepo.owner}/${githubRepo.repo} on GitHub${
         starCount ? ` (${starCount} stars)` : ""
       }`}
     >
-      <GitHubIcon className="w-5 h-5 text-text flex-shrink-0" />
+      <GitHubIcon className="text-text h-5 w-5 flex-shrink-0" />
       {starCount !== null && (
-        <span className="flex items-center gap-1 text-sm font-medium text-text leading-none">
+        <span className="text-text flex items-center gap-1 text-sm leading-none font-medium">
           {starCount > 999 ? `${(starCount / 1000).toFixed(1)}k` : starCount}
-          <StarIcon className="w-3.5 h-3.5 text-text flex-shrink-0" />
+          <StarIcon className="text-text h-3.5 w-3.5 flex-shrink-0" />
         </span>
       )}
     </Link>

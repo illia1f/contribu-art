@@ -37,7 +37,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.accessToken = token.accessToken as string;
       session.username = token.username as string;
       session.accountCreatedYear =
-        token.accountCreatedYear ?? new Date().getFullYear();
+        (token.accountCreatedYear as number | undefined) ??
+        new Date().getFullYear();
       return session;
     },
   },

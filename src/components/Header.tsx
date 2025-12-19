@@ -23,19 +23,19 @@ export function Header({ username, avatarUrl }: HeaderProps) {
   const isMobile = useIsMobile();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-surface-raised">
-      <div className="max-w-6xl mx-auto px-6 py-2 flex items-center justify-between">
+    <header className="border-border bg-surface-raised sticky top-0 z-50 w-full border-b">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
         <Logo size={54} withText={!isMobile} variant="simple" />
 
         <div className="flex items-center gap-3">
           <GitHubRepoLink />
           {username && (
             <DropdownMenu>
-              <DropdownMenuTrigger className="cursor-pointer rounded-full ring-offset-2 ring-offset-surface-raised transition-all hover:ring-2 hover:ring-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                <Avatar className="w-9 h-9 border-2 border-border bg-surface-raised transition-all hover:border-primary/50">
+              <DropdownMenuTrigger className="ring-offset-surface-raised hover:ring-primary/50 focus-visible:ring-primary cursor-pointer rounded-full ring-offset-2 transition-all hover:ring-2 focus-visible:ring-2 focus-visible:outline-none">
+                <Avatar className="border-border bg-surface-raised hover:border-primary/50 h-9 w-9 border-2 transition-all">
                   {avatarUrl && <AvatarImage src={avatarUrl} alt={username} />}
                   <AvatarFallback>
-                    <GitHubIcon className="w-5 h-5" />
+                    <GitHubIcon className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
@@ -46,21 +46,21 @@ export function Header({ username, avatarUrl }: HeaderProps) {
                 className="min-w-48"
               >
                 {/* User info section */}
-                <div className="px-3 py-2 border-b border-border">
+                <div className="border-border border-b px-3 py-2">
                   <div className="flex items-center gap-3">
-                    <Avatar className="w-8 h-8 border border-border bg-surface">
+                    <Avatar className="border-border bg-surface h-8 w-8 border">
                       {avatarUrl && (
                         <AvatarImage src={avatarUrl} alt={username} />
                       )}
                       <AvatarFallback>
-                        <GitHubIcon className="w-4 h-4" />
+                        <GitHubIcon className="h-4 w-4" />
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                      <span className="text-sm font-medium text-text">
+                      <span className="text-text text-sm font-medium">
                         {username}
                       </span>
-                      <span className="text-xs text-text-muted">
+                      <span className="text-text-muted text-xs">
                         GitHub Account
                       </span>
                     </div>
@@ -70,9 +70,9 @@ export function Header({ username, avatarUrl }: HeaderProps) {
                 {/* Menu items */}
                 <DropdownMenuItem
                   onClick={() => signOut()}
-                  className="flex items-center gap-2 px-3 py-2 text-sm text-text-muted cursor-pointer transition-colors hover:bg-surface hover:text-text focus-visible:bg-surface focus-visible:text-text focus-visible:outline-none"
+                  className="text-text-muted hover:bg-surface hover:text-text focus-visible:bg-surface focus-visible:text-text flex cursor-pointer items-center gap-2 px-3 py-2 text-sm transition-colors focus-visible:outline-none"
                 >
-                  <SignOutIcon className="w-4 h-4" />
+                  <SignOutIcon className="h-4 w-4" />
                   Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>

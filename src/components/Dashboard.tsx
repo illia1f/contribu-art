@@ -226,7 +226,7 @@ export function Dashboard({ session }: DashboardProps) {
   return (
     <>
       {/* Controls */}
-      <div className="flex flex-wrap items-center gap-6 mb-6">
+      <div className="mb-6 flex flex-wrap items-center gap-6">
         <YearSelector
           selectedYear={selectedYear}
           onYearChange={setSelectedYear}
@@ -251,17 +251,17 @@ export function Dashboard({ session }: DashboardProps) {
 
       {/* Selection info */}
       {selectedCells.size > 0 && (
-        <div className="mb-6 p-4 bg-surface-raised rounded-lg border border-border">
+        <div className="bg-surface-raised border-border mb-6 rounded-lg border p-4">
           <div className="flex items-center justify-between">
             <div className="text-text-muted text-sm">
-              <span className="font-medium text-text">
+              <span className="text-text font-medium">
                 {selectedCells.size}
               </span>{" "}
               cells selected
             </div>
             <button
               onClick={() => setSelectedCells(new Map())}
-              className="text-text-muted text-sm hover:text-text transition-colors"
+              className="text-text-muted hover:text-text text-sm transition-colors"
             >
               Clear selection
             </button>
@@ -270,9 +270,9 @@ export function Dashboard({ session }: DashboardProps) {
       )}
 
       {/* Repository selection and paint button */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 p-5 bg-surface-raised rounded-lg border border-border">
+      <div className="bg-surface-raised border-border grid grid-cols-1 gap-4 rounded-lg border p-5 lg:grid-cols-[1fr_auto]">
         {/* Left side: Repository and Commit Mode */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+        <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
           <RepoSelector
             repositories={repositories}
             selectedRepo={selectedRepo}
@@ -287,7 +287,7 @@ export function Dashboard({ session }: DashboardProps) {
         </div>
 
         {/* Right side: Paint Button */}
-        <div className="flex items-center justify-center sm:justify-end lg:items-center pt-2 sm:pt-0">
+        <div className="flex items-center justify-center pt-2 sm:justify-end sm:pt-0 lg:items-center">
           <PaintButton
             onClick={handlePaint}
             disabled={!selectedRepo || selectedCells.size === 0}

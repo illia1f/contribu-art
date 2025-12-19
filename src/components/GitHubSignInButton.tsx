@@ -26,10 +26,10 @@ export function GitHubSignInButton({ className }: { className?: string }) {
       onClick={handleSignIn}
       disabled={isLoading}
       className={cn(
-        "cursor-pointer w-full flex items-center justify-center gap-3 h-12 rounded-xl",
-        "bg-[#24292f] hover:bg-[#1b1f23] text-white border-none",
-        "transition-all duration-300 font-semibold text-base shadow-md hover:shadow-lg",
-        "disabled:opacity-80 disabled:cursor-not-allowed",
+        "flex h-12 w-full cursor-pointer items-center justify-center gap-3 rounded-xl",
+        "border-none bg-[#24292f] text-white hover:bg-[#1b1f23]",
+        "text-base font-semibold shadow-md transition-all duration-300 hover:shadow-lg",
+        "disabled:cursor-not-allowed disabled:opacity-80",
         className
       )}
     >
