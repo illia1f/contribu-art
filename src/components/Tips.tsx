@@ -1,8 +1,8 @@
 export function Tips() {
   return (
-    <div className="mt-6 p-4 bg-surface-overlay/50 rounded-lg border border-border-muted">
-      <h3 className="text-sm font-medium text-text mb-2">Tips</h3>
-      <ul className="text-xs text-text-muted space-y-1">
+    <div className="bg-surface-overlay/50 border-border-muted mt-6 rounded-lg border p-4">
+      <h3 className="text-text mb-2 text-sm font-medium">Tips</h3>
+      <ul className="text-text-muted space-y-1 text-xs">
         <li>• Click and drag to select multiple cells at once</li>
         <li>• Use intensity 0 (clear) to remove existing selections</li>
         <li>

@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+
+# Build outputs
+.next
+out
+build
+
+# Package files
+package-lock.json
+pnpm-lock.yaml
+
+# Generated
+*.min.js
+*.min.css
+
+# Documentation
+*.md
+LICENSE
+
+# Config files
+*.yml
+*.yaml
+*.json
+commitlint.config.js

@@ -40,18 +40,18 @@ export function YearSelector({
       >
         <Select.Trigger
           className={cn(
-            "px-3 py-2 rounded-md",
-            "bg-card border border-border",
-            "text-foreground text-sm text-left",
-            "focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring",
+            "rounded-md px-3 py-2",
+            "bg-card border-border border",
+            "text-foreground text-left text-sm",
+            "focus:ring-ring/50 focus:border-ring focus:ring-2 focus:outline-none",
             "cursor-pointer",
             "flex items-center justify-between gap-2",
             "min-w-[100px]"
           )}
         >
           <Select.Value className="truncate">{selectedYear}</Select.Value>
-          <Select.Icon className="shrink-0 text-muted-foreground">
-            <ChevronDownIcon className="w-4 h-4" />
+          <Select.Icon className="text-muted-foreground shrink-0">
+            <ChevronDownIcon className="h-4 w-4" />
           </Select.Icon>
         </Select.Trigger>
 
@@ -65,7 +65,7 @@ export function YearSelector({
           >
             <Select.Popup
               className={cn(
-                "bg-card border border-border rounded-md shadow-lg",
+                "bg-card border-border rounded-md border shadow-lg",
                 "min-w-[var(--anchor-width)]",
                 "max-h-[300px]",
                 "flex flex-col",
@@ -78,17 +78,17 @@ export function YearSelector({
                     key={year}
                     value={year.toString()}
                     className={cn(
-                      "px-3 py-2 rounded-md text-sm cursor-pointer",
+                      "cursor-pointer rounded-md px-3 py-2 text-sm",
                       "text-foreground",
                       "hover:bg-muted",
-                      "focus:outline-none focus:bg-muted",
+                      "focus:bg-muted focus:outline-none",
                       "data-[selected]:bg-primary/10 data-[selected]:text-primary",
                       "flex items-center justify-between gap-2"
                     )}
                   >
                     <Select.ItemText>{year}</Select.ItemText>
                     <Select.ItemIndicator className="shrink-0">
-                      <CheckIcon className="w-4 h-4" />
+                      <CheckIcon className="h-4 w-4" />
                     </Select.ItemIndicator>
                   </Select.Item>
                 ))}

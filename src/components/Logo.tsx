@@ -44,7 +44,7 @@ export function Logo({
         />
       </div>
       {withText && (
-        <h1 className="text-xl font-bold text-text tracking-tight">
+        <h1 className="text-text text-xl font-bold tracking-tight">
           Contribu-Art
         </h1>
       )}

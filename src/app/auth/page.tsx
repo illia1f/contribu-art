@@ -19,23 +19,23 @@ export const metadata = authMetadata;
 
 export default function AuthPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-surface relative overflow-hidden">
+    <div className="bg-surface relative flex min-h-screen flex-col overflow-hidden">
       {/* Background decoration */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-contrib-4/5 blur-[120px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-contrib-3/5 blur-[120px] rounded-full pointer-events-none" />
+      <div className="bg-contrib-4/5 pointer-events-none absolute top-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full blur-[120px]" />
+      <div className="bg-contrib-3/5 pointer-events-none absolute right-[-10%] bottom-[-10%] h-[40%] w-[40%] rounded-full blur-[120px]" />
 
       <Header />
 
-      <main className="flex-1 flex items-center justify-center p-6 relative z-10">
-        <div className="w-full max-w-md animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <Card className="p-8 shadow-2xl bg-surface-raised/80 backdrop-blur-sm border-border rounded-2xl gap-8">
-            <CardHeader className="text-center p-0">
-              <div className="flex justify-center mb-6">
-                <div className="p-3 rounded-2xl bg-surface border border-border shadow-inner">
+      <main className="relative z-10 flex flex-1 items-center justify-center p-6">
+        <div className="animate-in fade-in slide-in-from-bottom-4 w-full max-w-md duration-700">
+          <Card className="bg-surface-raised/80 border-border gap-8 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
+            <CardHeader className="p-0 text-center">
+              <div className="mb-6 flex justify-center">
+                <div className="bg-surface border-border rounded-2xl border p-3 shadow-inner">
                   <Logo size={80} />
                 </div>
               </div>
-              <CardTitle className="text-3xl font-bold text-text tracking-tight mb-2">
+              <CardTitle className="text-text mb-2 text-3xl font-bold tracking-tight">
                 Welcome Back
               </CardTitle>
               <CardDescription className="text-text-muted text-base">
@@ -43,7 +43,7 @@ export default function AuthPage() {
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="p-0 space-y-8">
+            <CardContent className="space-y-8 p-0">
               <GitHubSignInButton />
 
               {/* Divider */}
@@ -51,15 +51,15 @@ export default function AuthPage() {
                 <div className="absolute inset-0 flex items-center">
                   <Separator />
                 </div>
-                <div className="relative flex justify-center text-xs uppercase tracking-widest">
-                  <span className="px-3 bg-card text-text-subtle font-medium">
+                <div className="relative flex justify-center text-xs tracking-widest uppercase">
+                  <span className="bg-card text-text-subtle px-3 font-medium">
                     Secure authentication
                   </span>
                 </div>
               </div>
 
               {/* Info */}
-              <p className="text-text-subtle text-[13px] text-center leading-relaxed">
+              <p className="text-text-subtle text-center text-[13px] leading-relaxed">
                 We need access to your repositories to create commits that paint
                 your contribution graph. Your data stays secure with GitHub
                 OAuth.
@@ -69,13 +69,13 @@ export default function AuthPage() {
 
           <div className="mt-12 grid grid-cols-3 gap-2">
             <FeatureItem label="Create Art">
-              <ImageIcon className="size-5 text-contrib-4" />
+              <ImageIcon className="text-contrib-4 size-5" />
             </FeatureItem>
             <FeatureItem label="Quick Paint">
-              <ClockIcon className="size-5 text-contrib-4" />
+              <ClockIcon className="text-contrib-4 size-5" />
             </FeatureItem>
             <FeatureItem label="Secure">
-              <ShieldIcon className="size-5 text-contrib-4" />
+              <ShieldIcon className="text-contrib-4 size-5" />
             </FeatureItem>
           </div>
         </div>
@@ -92,10 +92,10 @@ interface FeatureItemProps {
 function FeatureItem({ children, label }: FeatureItemProps) {
   return (
     <div className="group flex flex-col items-center p-2 transition-all duration-300 hover:-translate-y-1">
-      <div className="w-12 h-12 rounded-xl bg-surface-raised/50 border border-border flex items-center justify-center mb-3 shadow-sm group-hover:shadow-md group-hover:border-contrib-3/50 group-hover:bg-contrib-3/10 transition-all duration-300">
+      <div className="bg-surface-raised/50 border-border group-hover:border-contrib-3/50 group-hover:bg-contrib-3/10 mb-3 flex h-12 w-12 items-center justify-center rounded-xl border shadow-sm transition-all duration-300 group-hover:shadow-md">
         {children}
       </div>
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-text-muted group-hover:text-text transition-colors">
+      <p className="text-text-muted group-hover:text-text text-[11px] font-semibold tracking-wider uppercase transition-colors">
         {label}
       </p>
     </div>

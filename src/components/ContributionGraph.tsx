@@ -124,7 +124,7 @@ export function ContributionGraph({
 
   if (isLoading) {
     return (
-      <div className="p-5 bg-surface-raised rounded-lg border border-border">
+      <div className="bg-surface-raised border-border rounded-lg border p-5">
         <div className="animate-pulse">
           <div className="overflow-x-auto">
             <table className="border-collapse" style={{ borderSpacing: 0 }}>
@@ -138,7 +138,7 @@ export function ContributionGraph({
                       style={{ width: CELL_WITH_GAP }}
                     >
                       {i % 4 === 0 && i < 50 && (
-                        <div className="h-2.5 w-full bg-surface-overlay rounded" />
+                        <div className="bg-surface-overlay h-2.5 w-full rounded" />
                       )}
                     </td>
                   ))}
@@ -149,7 +149,7 @@ export function ContributionGraph({
                   <tr key={dayIndex}>
                     <td className="pr-2 text-right align-middle">
                       {dayIndex % 2 === 1 && (
-                        <div className="h-2.5 w-6 bg-surface-overlay rounded ml-auto" />
+                        <div className="bg-surface-overlay ml-auto h-2.5 w-6 rounded" />
                       )}
                     </td>
                     {Array.from({ length: 53 }).map((_, weekIndex) => (
@@ -160,7 +160,7 @@ export function ContributionGraph({
                         }}
                       >
                         <div
-                          className="w-[10px] h-[10px] rounded-[2px] bg-surface-overlay"
+                          className="bg-surface-overlay h-[10px] w-[10px] rounded-[2px]"
                           style={{
                             width: CELL_SIZE,
                             height: CELL_SIZE,
@@ -173,15 +173,15 @@ export function ContributionGraph({
               </tbody>
             </table>
           </div>
-          <div className="flex items-center justify-end gap-1.5 mt-3">
-            <div className="h-2.5 w-6 bg-surface-overlay rounded" />
+          <div className="mt-3 flex items-center justify-end gap-1.5">
+            <div className="bg-surface-overlay h-2.5 w-6 rounded" />
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="w-[10px] h-[10px] rounded-[2px] bg-surface-overlay"
+                className="bg-surface-overlay h-[10px] w-[10px] rounded-[2px]"
               />
             ))}
-            <div className="h-2.5 w-6 bg-surface-overlay rounded" />
+            <div className="bg-surface-overlay h-2.5 w-6 rounded" />
           </div>
         </div>
       </div>
@@ -192,7 +192,7 @@ export function ContributionGraph({
 
   return (
     <div
-      className="p-5 bg-surface-raised rounded-lg border border-border select-none"
+      className="bg-surface-raised border-border rounded-lg border p-5 select-none"
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
@@ -210,7 +210,7 @@ export function ContributionGraph({
                 return (
                   <td
                     key={weekIndex}
-                    className="text-xs text-text-muted font-normal pb-1"
+                    className="text-text-muted pb-1 text-xs font-normal"
                     style={{
                       width: CELL_WITH_GAP,
                       fontSize: "11px",
@@ -274,7 +274,7 @@ export function ContributionGraph({
                           "outline outline-1 outline-offset-[-1px]",
                           displayColor,
                           isSelected
-                            ? "outline-yellow-400 outline-2"
+                            ? "outline-2 outline-yellow-400"
                             : "outline-[rgba(27,31,35,0.06)] dark:outline-[rgba(255,255,255,0.05)]",
                           "hover:outline-[rgba(255,255,255,0.4)]"
                         )}
@@ -296,7 +296,7 @@ export function ContributionGraph({
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-end gap-1.5 mt-3 text-xs text-text-muted">
+      <div className="text-text-muted mt-3 flex items-center justify-end gap-1.5 text-xs">
         <span className="mr-1">Less</span>
         {[0, 1, 2, 3, 4].map((level) => (
           <div

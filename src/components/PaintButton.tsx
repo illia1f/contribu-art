@@ -8,17 +8,21 @@ interface PaintButtonProps {
   selectedCount: number;
 }
 
-export function PaintButton({ onClick, disabled, selectedCount }: PaintButtonProps) {
+export function PaintButton({
+  onClick,
+  disabled,
+  selectedCount,
+}: PaintButtonProps) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "px-6 py-3 rounded-lg font-medium text-base",
+        "rounded-lg px-6 py-3 text-base font-medium",
         "transition-all duration-200",
         disabled
           ? "bg-surface-overlay text-text-subtle cursor-not-allowed"
-          : "bg-gradient-to-r from-contrib-3 to-contrib-4 text-surface hover:from-contrib-4 hover:to-contrib-4 hover:shadow-lg hover:shadow-accent/20"
+          : "from-contrib-3 to-contrib-4 text-surface hover:from-contrib-4 hover:to-contrib-4 hover:shadow-accent/20 bg-gradient-to-r hover:shadow-lg"
       )}
     >
       <span className="flex items-center gap-2">
@@ -33,4 +37,3 @@ export function PaintButton({ onClick, disabled, selectedCount }: PaintButtonPro
     </button>
   );
 }
-
