@@ -83,3 +83,69 @@ export function getTargetCommitsForIntensity(intensity: number): number {
   };
   return targets[intensity] ?? 0;
 }
+
+/**
+ * Contribution day data from the GitHub graph
+ */
+interface ContributionDay {
+  date: string;
+  contributionCount: number;
+}
+
+/**
+ * Contribution week containing multiple days
+ */
+interface ContributionWeek {
+  contributionDays: ContributionDay[];
+}
+
+/**
+ * Generates random cell selections from empty cells in the contribution graph.
+ * Only selects cells that have no existing contributions.
+ *
+ * @param weeks - The contribution weeks data from GitHub
+ * @param fillPercentage - Percentage of empty cells to fill (0-100), default 30%
+ * @returns A Map of date strings to intensity levels (1-4)
+ */
+export function generateRandomCells(
+  weeks: ContributionWeek[],
+  fillPercentage: number = 30
+): Map<string, number> {
+  const selectedCells = new Map<string, number>();
+
+  // Collect all empty cells (cells with no contributions)
+  const emptyCells: string[] = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  weeks.forEach((week) => {
+    week.contributionDays.forEach((day) => {
+      // Only include cells with no existing contributions
+      // and that are not in the future
+      const cellDate = new Date(day.date);
+      if (day.contributionCount === 0 && cellDate <= today) {
+        emptyCells.push(day.date);
+      }
+    });
+  });
+
+  // Calculate how many cells to fill
+  const cellsToFill = Math.floor(emptyCells.length * (fillPercentage / 100));
+
+  // Shuffle empty cells using Fisher-Yates algorithm
+  const shuffled = [...emptyCells];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // Select cells and assign random intensities (1-4)
+  for (let i = 0; i < cellsToFill; i++) {
+    const date = shuffled[i];
+    // Random intensity between 1 and 4 (never 0, as that would be no contribution)
+    const intensity = Math.floor(Math.random() * 4) + 1;
+    selectedCells.set(date, intensity);
+  }
+
+  return selectedCells;
+}
