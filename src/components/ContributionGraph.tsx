@@ -305,7 +305,7 @@ export function ContributionGraph({
                           "ring-1 ring-inset",
                           displayColor,
                           isSelected
-                            ? "relative z-10 ring-2 ring-yellow-400"
+                            ? "relative z-10 ring-1 ring-yellow-400"
                             : "ring-white/20 dark:ring-white/20",
                           "hover:ring-white/45"
                         )}

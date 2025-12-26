@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback } from "react";
 import { ConfigurationPanel } from "./ConfigurationPanel";
@@ -13,7 +13,7 @@ import type { Session } from "next-auth";
 import { fetchContributions } from "@/services/contributions";
 import { fetchRepositories } from "@/services/repos";
 import { paintContributions } from "@/services/paint";
-import { cn } from "@/lib/utils";
+import { cn, generateRandomCells } from "@/lib/utils";
 
 interface DashboardProps {
   session: Session;
@@ -31,6 +31,10 @@ export function Dashboard({ session }: DashboardProps) {
 
   // Mobile tab state
   const [activeTab, setActiveTab] = useState<TabType>("config");
+
+  // Auto mode state
+  const [autoMode, setAutoMode] = useState(false);
+  const [fillDensity, setFillDensity] = useState(5); // 1-10 scale, maps to 10%-100%
 
   // Data
   const [weeks, setWeeks] = useState<ContributionWeek[]>([]);
@@ -97,6 +101,44 @@ export function Dashboard({ session }: DashboardProps) {
       return next;
     });
   }, []);
+
+  // Handle auto mode toggle
+  const handleAutoModeChange = useCallback(
+    (enabled: boolean) => {
+      setAutoMode(enabled);
+      if (enabled) {
+        // When enabling auto mode, generate random selections
+        const fillPercentage = fillDensity * 10;
+        const randomCells = generateRandomCells(weeks, fillPercentage);
+        setSelectedCells(randomCells);
+      } else {
+        // When disabling auto mode, clear selections
+        setSelectedCells(new Map());
+      }
+    },
+    [weeks, fillDensity]
+  );
+
+  // Handle fill density change
+  const handleFillDensityChange = useCallback(
+    (density: number) => {
+      setFillDensity(density);
+      // If auto mode is active, regenerate with new density
+      if (autoMode) {
+        const fillPercentage = density * 10;
+        const randomCells = generateRandomCells(weeks, fillPercentage);
+        setSelectedCells(randomCells);
+      }
+    },
+    [autoMode, weeks]
+  );
+
+  // Handle regenerate random cells
+  const handleRandomize = useCallback(() => {
+    const fillPercentage = fillDensity * 10;
+    const randomCells = generateRandomCells(weeks, fillPercentage);
+    setSelectedCells(randomCells);
+  }, [weeks, fillDensity]);
 
   // Handle paint action
   const handlePaint = async () => {
@@ -264,6 +306,11 @@ export function Dashboard({ session }: DashboardProps) {
               onCommitModeChange={setCommitMode}
               onPaint={handlePaint}
               selectedCellCount={selectedCells.size}
+              autoMode={autoMode}
+              onAutoModeChange={handleAutoModeChange}
+              onRandomize={handleRandomize}
+              fillDensity={fillDensity}
+              onFillDensityChange={handleFillDensityChange}
             />
           </div>
         </aside>
