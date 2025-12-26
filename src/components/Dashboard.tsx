@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ConfigurationPanel } from "./ConfigurationPanel";
 import { ResultsPanel } from "./ResultsPanel";
 import { MobileTabSwitcher, type TabType } from "./MobileTabSwitcher";
@@ -14,6 +14,7 @@ import { fetchContributions } from "@/services/contributions";
 import { fetchRepositories } from "@/services/repos";
 import { paintContributions } from "@/services/paint";
 import { cn, generateRandomCells } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface DashboardProps {
   session: Session;
@@ -53,6 +54,18 @@ export function Dashboard({ session }: DashboardProps) {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createModalKey, setCreateModalKey] = useState(0);
 
+  // Abort controller for cancelling paint operation
+  const paintAbortControllerRef = useRef<AbortController | null>(null);
+
+  // Cleanup: abort paint operation when component unmounts
+  useEffect(() => {
+    return () => {
+      if (paintAbortControllerRef.current) {
+        paintAbortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
   // Fetch contributions when year changes
   useEffect(() => {
     const loadContributions = async () => {
@@ -62,6 +75,7 @@ export function Dashboard({ session }: DashboardProps) {
         setWeeks(data.weeks || []);
       } catch (error) {
         console.error("Failed to fetch contributions:", error);
+        toast.error("Failed to load contributions");
       } finally {
         setIsLoadingGraph(false);
       }
@@ -81,6 +95,7 @@ export function Dashboard({ session }: DashboardProps) {
         setRepositories(data);
       } catch (error) {
         console.error("Failed to fetch repositories:", error);
+        toast.error("Failed to load repositories");
       } finally {
         setIsLoadingRepos(false);
       }
@@ -163,6 +178,10 @@ export function Dashboard({ session }: DashboardProps) {
       })
     );
 
+    // Create abort controller for this paint operation
+    const abortController = new AbortController();
+    paintAbortControllerRef.current = abortController;
+
     // Reset and open modal
     setIsPainting(true);
     setPaintProgress(0);
@@ -192,7 +211,8 @@ export function Dashboard({ session }: DashboardProps) {
             receivedDone = true;
             setPaintDone(true);
           }
-        }
+        },
+        abortController.signal
       );
 
       // If stream ended without a proper "done" message, it likely means
@@ -208,7 +228,14 @@ export function Dashboard({ session }: DashboardProps) {
         setPaintDone(true);
       }
     } catch (error) {
+      // If the request was aborted (user navigated away), close silently with debug log
+      if (error instanceof Error && error.name === "AbortError") {
+        console.debug("Paint operation aborted (user navigated away)");
+        setIsPainting(false);
+        return;
+      }
       console.error("Paint error:", error);
+      toast.error("Paint operation failed");
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
       // Provide more user-friendly messages for common network errors
@@ -225,6 +252,8 @@ export function Dashboard({ session }: DashboardProps) {
       }
       setPaintMessage(`Error: ${friendlyMessage}`);
       setPaintDone(true);
+    } finally {
+      paintAbortControllerRef.current = null;
     }
   };
 
@@ -242,6 +271,7 @@ export function Dashboard({ session }: DashboardProps) {
           setWeeks(data.weeks || []);
         } catch (error) {
           console.error("Failed to fetch contributions:", error);
+          toast.error("Failed to refresh contributions");
         } finally {
           setIsLoadingGraph(false);
         }
