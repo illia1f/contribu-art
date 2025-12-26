@@ -68,7 +68,7 @@ const monthLabels = [
 ];
 
 // Cell dimensions matching GitHub's style
-const CELL_SIZE = 10;
+const CELL_SIZE = 12;
 const CELL_GAP = 3;
 const CELL_WITH_GAP = CELL_SIZE + CELL_GAP;
 
@@ -156,7 +156,8 @@ export function ContributionGraph({
                 {Array.from({ length: 7 }).map((_, dayIndex) => (
                   <TableRow
                     key={dayIndex}
-                    className="h-[13px] border-none! hover:bg-transparent!"
+                    className="border-none! hover:bg-transparent!"
+                    style={{ height: CELL_WITH_GAP }}
                   >
                     <TableCell className="border-none! p-0 pr-2 text-right align-middle leading-[13px]">
                       {dayIndex % 2 === 1 && (
@@ -192,7 +193,8 @@ export function ContributionGraph({
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-muted h-[10px] w-[10px] rounded-[2px]"
+                className="bg-muted rounded-[2px]"
+                style={{ width: CELL_SIZE, height: CELL_SIZE }}
               />
             ))}
             <div className="bg-muted h-2.5 w-6 rounded" />
@@ -245,7 +247,8 @@ export function ContributionGraph({
             {[0, 1, 2, 3, 4, 5, 6].map((dayIndex) => (
               <TableRow
                 key={dayIndex}
-                className="h-[13px] border-none! hover:bg-transparent!"
+                className="border-none! hover:bg-transparent!"
+                style={{ height: CELL_WITH_GAP }}
               >
                 {/* Day label */}
                 <TableCell className="text-muted-foreground border-none! p-0 pr-2 text-right align-middle text-[11px] leading-[13px]">

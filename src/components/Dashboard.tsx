@@ -1,19 +1,19 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { YearSelector } from "./YearSelector";
-import { ColorPicker } from "./ColorPicker";
-import { RepoSelector } from "./RepoSelector";
-import { ContributionGraph, ContributionWeek } from "./ContributionGraph";
-import { PaintButton } from "./PaintButton";
+import { ConfigurationPanel } from "./ConfigurationPanel";
+import { ResultsPanel } from "./ResultsPanel";
+import { MobileTabSwitcher, type TabType } from "./MobileTabSwitcher";
 import { ProgressModal } from "./ProgressModal";
 import { CreateRepoModal } from "./CreateRepoModal";
-import { CommitModeToggle, type CommitMode } from "./CommitModeToggle";
+import type { CommitMode } from "./CommitModeToggle";
+import type { ContributionWeek } from "./ContributionGraph";
 import type { Repository } from "@/app/api/repos/route";
 import type { Session } from "next-auth";
 import { fetchContributions } from "@/services/contributions";
 import { fetchRepositories } from "@/services/repos";
 import { paintContributions } from "@/services/paint";
+import { cn } from "@/lib/utils";
 
 interface DashboardProps {
   session: Session;
@@ -28,6 +28,9 @@ export function Dashboard({ session }: DashboardProps) {
   );
   const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
   const [commitMode, setCommitMode] = useState<CommitMode>("transaction");
+
+  // Mobile tab state
+  const [activeTab, setActiveTab] = useState<TabType>("config");
 
   // Data
   const [weeks, setWeeks] = useState<ContributionWeek[]>([]);
@@ -225,75 +228,63 @@ export function Dashboard({ session }: DashboardProps) {
 
   return (
     <>
-      {/* Controls */}
-      <div className="mb-6 flex flex-wrap items-center gap-6">
-        <YearSelector
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
-          accountCreatedYear={session?.accountCreatedYear}
-        />
-        <ColorPicker
-          selectedIntensity={currentIntensity}
-          onIntensityChange={setCurrentIntensity}
-        />
-      </div>
+      {/* Mobile Tab Switcher */}
+      <MobileTabSwitcher
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        selectedCellCount={selectedCells.size}
+      />
 
-      {/* Contribution Graph */}
-      <div className="mb-6">
-        <ContributionGraph
-          weeks={weeks}
-          selectedCells={selectedCells}
-          onCellToggle={handleCellToggle}
-          currentIntensity={currentIntensity}
-          isLoading={isLoadingGraph}
-        />
-      </div>
-
-      {/* Selection info */}
-      {selectedCells.size > 0 && (
-        <div className="bg-surface-raised border-border mb-6 rounded-lg border p-4">
-          <div className="flex items-center justify-between">
-            <div className="text-text-muted text-sm">
-              <span className="text-text font-medium">
-                {selectedCells.size}
-              </span>{" "}
-              cells selected
-            </div>
-            <button
-              onClick={() => setSelectedCells(new Map())}
-              className="text-text-muted hover:text-text text-sm transition-colors"
-            >
-              Clear selection
-            </button>
+      {/* Two-Section Layout */}
+      <div className="flex min-h-[600px] flex-col lg:flex-row">
+        {/* Configuration Section - Left Side */}
+        <aside
+          className={cn(
+            "lg:border-border w-full shrink-0 lg:w-72 lg:border-r lg:pr-6 xl:w-80",
+            // Mobile: show/hide based on active tab
+            activeTab === "config" ? "block" : "hidden lg:block"
+          )}
+        >
+          <div className="lg:sticky lg:top-4 lg:flex lg:max-h-[calc(100vh-8rem)] lg:flex-col">
+            <ConfigurationPanel
+              selectedYear={selectedYear}
+              onYearChange={setSelectedYear}
+              accountCreatedYear={session?.accountCreatedYear}
+              selectedIntensity={currentIntensity}
+              onIntensityChange={setCurrentIntensity}
+              repositories={repositories}
+              selectedRepo={selectedRepo}
+              onRepoChange={setSelectedRepo}
+              isLoadingRepos={isLoadingRepos}
+              onCreateRepoClick={() => {
+                setCreateModalKey((k) => k + 1);
+                setShowCreateModal(true);
+              }}
+              commitMode={commitMode}
+              onCommitModeChange={setCommitMode}
+              onPaint={handlePaint}
+              selectedCellCount={selectedCells.size}
+            />
           </div>
-        </div>
-      )}
+        </aside>
 
-      {/* Repository selection and paint button */}
-      <div className="bg-surface-raised border-border grid grid-cols-1 gap-4 rounded-lg border p-5 lg:grid-cols-[1fr_auto]">
-        {/* Left side: Repository and Commit Mode */}
-        <div className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2">
-          <RepoSelector
-            repositories={repositories}
-            selectedRepo={selectedRepo}
-            onRepoChange={setSelectedRepo}
-            isLoading={isLoadingRepos}
-            onCreateClick={() => {
-              setCreateModalKey((k) => k + 1);
-              setShowCreateModal(true);
-            }}
+        {/* Preview Section - Right Side (Main Content) */}
+        <main
+          className={cn(
+            "min-w-0 flex-1 lg:pl-6",
+            // Mobile: show/hide based on active tab
+            activeTab === "preview" ? "block" : "hidden lg:block"
+          )}
+        >
+          <ResultsPanel
+            weeks={weeks}
+            isLoadingGraph={isLoadingGraph}
+            selectedCells={selectedCells}
+            onCellToggle={handleCellToggle}
+            currentIntensity={currentIntensity}
+            onClearSelection={() => setSelectedCells(new Map())}
           />
-          <CommitModeToggle mode={commitMode} onModeChange={setCommitMode} />
-        </div>
-
-        {/* Right side: Paint Button */}
-        <div className="flex items-center justify-center pt-2 sm:justify-end sm:pt-0 lg:items-center">
-          <PaintButton
-            onClick={handlePaint}
-            disabled={!selectedRepo || selectedCells.size === 0}
-            selectedCount={selectedCells.size}
-          />
-        </div>
+        </main>
       </div>
 
       <CreateRepoModal
