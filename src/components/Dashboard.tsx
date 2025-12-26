@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useCallback } from "react";
-import { YearSelector } from "./YearSelector";
-import { ColorPicker } from "./ColorPicker";
-import { RepoSelector } from "./RepoSelector";
-import { ContributionGraph, ContributionWeek } from "./ContributionGraph";
-import { PaintButton } from "./PaintButton";
-import { ProgressModal } from "./ProgressModal";
-import { CreateRepoModal } from "./CreateRepoModal";
-import { CommitModeToggle, type CommitMode } from "./CommitModeToggle";
-import type { Repository } from "@/app/api/repos/route";
-import type { Session } from "next-auth";
-import { fetchContributions } from "@/services/contributions";
-import { fetchRepositories } from "@/services/repos";
-import { paintContributions } from "@/services/paint";
+import { useState, useEffect, useCallback } from 'react';
+import { ConfigurationPanel } from './ConfigurationPanel';
+import { ResultsPanel } from './ResultsPanel';
+import { MobileTabSwitcher, type TabType } from './MobileTabSwitcher';
+import { ProgressModal } from './ProgressModal';
+import { CreateRepoModal } from './CreateRepoModal';
+import type { CommitMode } from './CommitModeToggle';
+import type { ContributionWeek } from './ContributionGraph';
+import type { Repository } from '@/app/api/repos/route';
+import type { Session } from 'next-auth';
+import { fetchContributions } from '@/services/contributions';
+import { fetchRepositories } from '@/services/repos';
+import { paintContributions } from '@/services/paint';
+import { cn } from '@/lib/utils';
 
 interface DashboardProps {
   session: Session;
@@ -27,7 +27,10 @@ export function Dashboard({ session }: DashboardProps) {
     new Map()
   );
   const [selectedRepo, setSelectedRepo] = useState<string | null>(null);
-  const [commitMode, setCommitMode] = useState<CommitMode>("transaction");
+  const [commitMode, setCommitMode] = useState<CommitMode>('transaction');
+
+  // Mobile tab state
+  const [activeTab, setActiveTab] = useState<TabType>('config');
 
   // Data
   const [weeks, setWeeks] = useState<ContributionWeek[]>([]);
@@ -39,7 +42,7 @@ export function Dashboard({ session }: DashboardProps) {
   const [isPainting, setIsPainting] = useState(false);
   const [paintProgress, setPaintProgress] = useState(0);
   const [paintTotal, setPaintTotal] = useState(0);
-  const [paintMessage, setPaintMessage] = useState("");
+  const [paintMessage, setPaintMessage] = useState('');
   const [paintDone, setPaintDone] = useState(false);
 
   // Create repo modal state
@@ -54,7 +57,7 @@ export function Dashboard({ session }: DashboardProps) {
         const data = await fetchContributions(selectedYear);
         setWeeks(data.weeks || []);
       } catch (error) {
-        console.error("Failed to fetch contributions:", error);
+        console.error('Failed to fetch contributions:', error);
       } finally {
         setIsLoadingGraph(false);
       }
@@ -73,7 +76,7 @@ export function Dashboard({ session }: DashboardProps) {
         const data = await fetchRepositories();
         setRepositories(data);
       } catch (error) {
-        console.error("Failed to fetch repositories:", error);
+        console.error('Failed to fetch repositories:', error);
       } finally {
         setIsLoadingRepos(false);
       }
@@ -99,7 +102,7 @@ export function Dashboard({ session }: DashboardProps) {
   const handlePaint = async () => {
     if (!selectedRepo || selectedCells.size === 0) return;
 
-    const [owner, repo] = selectedRepo.split("/");
+    const [owner, repo] = selectedRepo.split('/');
 
     // Build a map of date -> existing contribution count from the graph data
     const existingContributions = new Map<string, number>();
@@ -122,7 +125,7 @@ export function Dashboard({ session }: DashboardProps) {
     setIsPainting(true);
     setPaintProgress(0);
     setPaintTotal(0);
-    setPaintMessage("Initializing...");
+    setPaintMessage('Initializing...');
     setPaintDone(false);
 
     let lastProgress = 0;
@@ -135,14 +138,14 @@ export function Dashboard({ session }: DashboardProps) {
           owner,
           repo,
           cells,
-          incremental: commitMode === "incremental",
+          incremental: commitMode === 'incremental',
         },
         (progress) => {
           lastProgress = progress.progress || 0;
           lastTotal = progress.total || 0;
           setPaintProgress(lastProgress);
           setPaintTotal(lastTotal);
-          setPaintMessage(progress.message || "");
+          setPaintMessage(progress.message || '');
           if (progress.done) {
             receivedDone = true;
             setPaintDone(true);
@@ -156,27 +159,27 @@ export function Dashboard({ session }: DashboardProps) {
         const progressInfo =
           lastTotal > 0
             ? ` (${lastProgress}/${lastTotal} commits completed)`
-            : "";
+            : '';
         setPaintMessage(
           `Error: Connection lost during painting${progressInfo}. Please try again - completed commits are saved.`
         );
         setPaintDone(true);
       }
     } catch (error) {
-      console.error("Paint error:", error);
+      console.error('Paint error:', error);
       const errorMessage =
-        error instanceof Error ? error.message : "Unknown error";
+        error instanceof Error ? error.message : 'Unknown error';
       // Provide more user-friendly messages for common network errors
       let friendlyMessage = errorMessage;
       if (
-        errorMessage.includes("ECONNRESET") ||
-        errorMessage.includes("fetch failed")
+        errorMessage.includes('ECONNRESET') ||
+        errorMessage.includes('fetch failed')
       ) {
         friendlyMessage =
-          "Connection to GitHub was lost. Please check your internet and try again.";
-      } else if (errorMessage.includes("ETIMEDOUT")) {
+          'Connection to GitHub was lost. Please check your internet and try again.';
+      } else if (errorMessage.includes('ETIMEDOUT')) {
         friendlyMessage =
-          "Request timed out. GitHub may be slow - please try again.";
+          'Request timed out. GitHub may be slow - please try again.';
       }
       setPaintMessage(`Error: ${friendlyMessage}`);
       setPaintDone(true);
@@ -186,7 +189,7 @@ export function Dashboard({ session }: DashboardProps) {
   // Handle modal close
   const handleModalClose = () => {
     setIsPainting(false);
-    if (paintDone && !paintMessage.toLowerCase().startsWith("error")) {
+    if (paintDone && !paintMessage.toLowerCase().startsWith('error')) {
       // Clear selections after successful paint
       setSelectedCells(new Map());
       // Refresh the graph
@@ -196,7 +199,7 @@ export function Dashboard({ session }: DashboardProps) {
           const data = await fetchContributions(selectedYear);
           setWeeks(data.weeks || []);
         } catch (error) {
-          console.error("Failed to fetch contributions:", error);
+          console.error('Failed to fetch contributions:', error);
         } finally {
           setIsLoadingGraph(false);
         }
@@ -208,7 +211,7 @@ export function Dashboard({ session }: DashboardProps) {
   // Handle view profile
   const handleViewProfile = () => {
     if (session?.username) {
-      window.open(`https://github.com/${session.username}`, "_blank");
+      window.open(`https://github.com/${session.username}`, '_blank');
     }
     handleModalClose();
   };
@@ -225,75 +228,63 @@ export function Dashboard({ session }: DashboardProps) {
 
   return (
     <>
-      {/* Controls */}
-      <div className="flex flex-wrap items-center gap-6 mb-6">
-        <YearSelector
-          selectedYear={selectedYear}
-          onYearChange={setSelectedYear}
-          accountCreatedYear={session?.accountCreatedYear}
-        />
-        <ColorPicker
-          selectedIntensity={currentIntensity}
-          onIntensityChange={setCurrentIntensity}
-        />
-      </div>
+      {/* Mobile Tab Switcher */}
+      <MobileTabSwitcher
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        selectedCellCount={selectedCells.size}
+      />
 
-      {/* Contribution Graph */}
-      <div className="mb-6">
-        <ContributionGraph
-          weeks={weeks}
-          selectedCells={selectedCells}
-          onCellToggle={handleCellToggle}
-          currentIntensity={currentIntensity}
-          isLoading={isLoadingGraph}
-        />
-      </div>
-
-      {/* Selection info */}
-      {selectedCells.size > 0 && (
-        <div className="mb-6 p-4 bg-surface-raised rounded-lg border border-border">
-          <div className="flex items-center justify-between">
-            <div className="text-text-muted text-sm">
-              <span className="font-medium text-text">
-                {selectedCells.size}
-              </span>{" "}
-              cells selected
-            </div>
-            <button
-              onClick={() => setSelectedCells(new Map())}
-              className="text-text-muted text-sm hover:text-text transition-colors"
-            >
-              Clear selection
-            </button>
+      {/* Two-Section Layout */}
+      <div className="flex flex-col lg:flex-row min-h-[600px]">
+        {/* Configuration Section - Left Side */}
+        <aside
+          className={cn(
+            'w-full lg:w-72 xl:w-80 shrink-0 lg:pr-6 lg:border-r lg:border-border',
+            // Mobile: show/hide based on active tab
+            activeTab === 'config' ? 'block' : 'hidden lg:block'
+          )}
+        >
+          <div className="lg:sticky lg:top-4 lg:max-h-[calc(100vh-8rem)] lg:flex lg:flex-col">
+            <ConfigurationPanel
+              selectedYear={selectedYear}
+              onYearChange={setSelectedYear}
+              accountCreatedYear={session?.accountCreatedYear}
+              selectedIntensity={currentIntensity}
+              onIntensityChange={setCurrentIntensity}
+              repositories={repositories}
+              selectedRepo={selectedRepo}
+              onRepoChange={setSelectedRepo}
+              isLoadingRepos={isLoadingRepos}
+              onCreateRepoClick={() => {
+                setCreateModalKey((k) => k + 1);
+                setShowCreateModal(true);
+              }}
+              commitMode={commitMode}
+              onCommitModeChange={setCommitMode}
+              onPaint={handlePaint}
+              selectedCellCount={selectedCells.size}
+            />
           </div>
-        </div>
-      )}
+        </aside>
 
-      {/* Repository selection and paint button */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 p-5 bg-surface-raised rounded-lg border border-border">
-        {/* Left side: Repository and Commit Mode */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
-          <RepoSelector
-            repositories={repositories}
-            selectedRepo={selectedRepo}
-            onRepoChange={setSelectedRepo}
-            isLoading={isLoadingRepos}
-            onCreateClick={() => {
-              setCreateModalKey((k) => k + 1);
-              setShowCreateModal(true);
-            }}
+        {/* Preview Section - Right Side (Main Content) */}
+        <main
+          className={cn(
+            'flex-1 min-w-0 lg:pl-6',
+            // Mobile: show/hide based on active tab
+            activeTab === 'preview' ? 'block' : 'hidden lg:block'
+          )}
+        >
+          <ResultsPanel
+            weeks={weeks}
+            isLoadingGraph={isLoadingGraph}
+            selectedCells={selectedCells}
+            onCellToggle={handleCellToggle}
+            currentIntensity={currentIntensity}
+            onClearSelection={() => setSelectedCells(new Map())}
           />
-          <CommitModeToggle mode={commitMode} onModeChange={setCommitMode} />
-        </div>
-
-        {/* Right side: Paint Button */}
-        <div className="flex items-center justify-center sm:justify-end lg:items-center pt-2 sm:pt-0">
-          <PaintButton
-            onClick={handlePaint}
-            disabled={!selectedRepo || selectedCells.size === 0}
-            selectedCount={selectedCells.size}
-          />
-        </div>
+        </main>
       </div>
 
       <CreateRepoModal

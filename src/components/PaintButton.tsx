@@ -14,19 +14,19 @@ export function PaintButton({ onClick, disabled, selectedCount }: PaintButtonPro
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "px-6 py-3 rounded-lg font-medium text-base",
+        "w-full px-6 py-3 rounded-lg font-medium text-base",
         "transition-all duration-200",
         disabled
-          ? "bg-surface-overlay text-text-subtle cursor-not-allowed"
-          : "bg-gradient-to-r from-contrib-3 to-contrib-4 text-surface hover:from-contrib-4 hover:to-contrib-4 hover:shadow-lg hover:shadow-accent/20"
+          ? "bg-muted text-muted-foreground cursor-not-allowed"
+          : "bg-gradient-to-r from-contrib-3 to-contrib-4 text-background hover:from-contrib-4 hover:to-contrib-4 hover:shadow-lg hover:shadow-accent/20"
       )}
     >
-      <span className="flex items-center gap-2">
+      <span className="flex items-center justify-center gap-2">
         <span>🎨</span>
         <span>
           Paint My Graph
           {selectedCount > 0 && (
-            <span className="ml-1 opacity-80">({selectedCount} cells)</span>
+            <span className="ml-1 opacity-80">({selectedCount})</span>
           )}
         </span>
       </span>

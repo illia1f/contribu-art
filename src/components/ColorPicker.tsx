@@ -28,8 +28,10 @@ export function ColorPicker({
   onIntensityChange,
 }: ColorPickerProps) {
   return (
-    <div className="flex items-center gap-4">
-      <span className="text-text-muted text-sm font-medium">Intensity:</span>
+    <div className="flex flex-col gap-2">
+      <label className="text-xs text-muted-foreground font-medium">
+        Intensity
+      </label>
       <div className="flex items-center gap-2">
         {[1, 2, 3, 4].map((intensity) => (
           <button
@@ -39,19 +41,20 @@ export function ColorPicker({
               intensityLabels[intensity]
             } (target: ${getTargetCommitsForIntensity(intensity)} commits)`}
             className={cn(
-              "w-7 h-7 rounded-sm transition-all duration-150",
+              "w-8 h-8 rounded-md transition-all duration-150 border border-border-muted",
               intensityColors[intensity],
               selectedIntensity === intensity
-                ? "ring-2 ring-white ring-offset-2 ring-offset-surface scale-110"
-                : "hover:ring-1 hover:ring-text-muted"
+                ? "ring-2 ring-white ring-offset-2 ring-offset-card scale-105"
+                : "hover:ring-1 hover:ring-muted-foreground hover:scale-105"
             )}
+            aria-label={`${intensityLabels[intensity]} intensity`}
           />
         ))}
       </div>
-      <span className="text-text-subtle text-xs">
-        {intensityLabels[selectedIntensity]} (
-        {getTargetCommitsForIntensity(selectedIntensity)} commits)
-      </span>
+      <p className="text-[10px] text-muted-foreground">
+        {intensityLabels[selectedIntensity]} -{" "}
+        {getTargetCommitsForIntensity(selectedIntensity)} commits per cell
+      </p>
     </div>
   );
 }

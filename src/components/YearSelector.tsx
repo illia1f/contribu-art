@@ -28,8 +28,8 @@ export function YearSelector({
   const years = Array.from({ length: yearCount }, (_, i) => currentYear - i);
 
   return (
-    <div className="flex items-center gap-3">
-      <label className="text-muted-foreground text-sm font-medium">Year:</label>
+    <div className="flex flex-col gap-2">
+      <label className="text-xs text-muted-foreground font-medium">Year</label>
       <Select.Root
         value={selectedYear.toString()}
         onValueChange={(value) => {
