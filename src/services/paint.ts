@@ -24,16 +24,19 @@ type PaintProgressCallback = (progress: PaintProgress) => void;
  * Paints contributions to a repository
  * @param request - Paint request parameters
  * @param onProgress - Optional callback for progress updates
+ * @param signal - Optional AbortSignal to cancel the operation
  * @returns Promise that resolves when painting is complete
  */
 export async function paintContributions(
   request: PaintRequest,
-  onProgress?: PaintProgressCallback
+  onProgress?: PaintProgressCallback,
+  signal?: AbortSignal
 ): Promise<void> {
   const response = await fetch("/api/paint", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     cache: "no-store",
+    signal,
     body: JSON.stringify({
       owner: request.owner,
       repo: request.repo,
@@ -71,8 +74,12 @@ export async function paintContributions(
           if (data.done) {
             return;
           }
-        } catch {
-          // Ignore parse errors
+        } catch (parseError) {
+          // Log parse errors for debugging but don't break the stream
+          console.warn("Failed to parse SSE event:", {
+            line: line.substring(0, 100),
+            error: parseError instanceof Error ? parseError.message : String(parseError),
+          });
         }
       }
     }
