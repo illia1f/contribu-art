@@ -68,13 +68,13 @@ export function CreateRepoModal({
       />
 
       {/* Modal */}
-      <div className="relative bg-surface-raised border border-border rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
+      <div className="bg-surface-raised border-border relative mx-4 w-full max-w-md rounded-xl border p-8 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+        <div className="mb-6 flex items-center gap-3">
+          <div className="bg-accent/20 flex h-10 w-10 items-center justify-center rounded-full">
             <span className="text-xl">+</span>
           </div>
-          <h2 className="text-xl font-bold text-text">Create New Repository</h2>
+          <h2 className="text-text text-xl font-bold">Create New Repository</h2>
         </div>
 
         {/* Form */}
@@ -83,7 +83,7 @@ export function CreateRepoModal({
           <div>
             <label
               htmlFor="repo-name"
-              className="block text-sm font-medium text-text mb-2"
+              className="text-text mb-2 block text-sm font-medium"
             >
               Repository Name
             </label>
@@ -98,16 +98,16 @@ export function CreateRepoModal({
               disabled={isCreating}
               placeholder="contribu-art-graph"
               className={cn(
-                "w-full px-3 py-2 rounded-md",
+                "w-full rounded-md px-3 py-2",
                 "bg-popover border",
                 "text-foreground text-sm",
-                "focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring",
-                "disabled:opacity-50 disabled:cursor-not-allowed",
+                "focus:ring-ring/50 focus:border-ring focus:ring-2 focus:outline-none",
+                "disabled:cursor-not-allowed disabled:opacity-50",
                 error ? "border-danger" : "border-border"
               )}
               required
             />
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-muted-foreground mt-1 text-xs">
               Only alphanumeric characters, hyphens, underscores, and dots are
               allowed
             </p>
@@ -121,11 +121,11 @@ export function CreateRepoModal({
               checked={isPrivate}
               onChange={(e) => setIsPrivate(e.target.checked)}
               disabled={isCreating}
-              className="w-4 h-4 rounded border-border text-accent focus:ring-ring/50 focus:ring-2"
+              className="border-border text-accent focus:ring-ring/50 h-4 w-4 rounded focus:ring-2"
             />
             <label
               htmlFor="repo-private"
-              className="text-sm text-text cursor-pointer flex items-center gap-2"
+              className="text-text flex cursor-pointer items-center gap-2 text-sm"
             >
               <span>Make this repository private</span>
               <span className="text-muted-foreground">🔒</span>
@@ -134,8 +134,8 @@ export function CreateRepoModal({
 
           {/* Error Message */}
           {error && (
-            <div className="bg-danger/10 border border-danger/20 rounded-lg p-3">
-              <p className="text-sm text-danger">{error}</p>
+            <div className="bg-danger/10 border-danger/20 rounded-lg border p-3">
+              <p className="text-danger text-sm">{error}</p>
             </div>
           )}
 
@@ -146,11 +146,11 @@ export function CreateRepoModal({
               onClick={onClose}
               disabled={isCreating}
               className={cn(
-                "flex-1 px-4 py-2.5 rounded-lg font-medium text-sm",
+                "flex-1 rounded-lg px-4 py-2.5 text-sm font-medium",
                 "bg-surface-overlay text-text-muted",
                 "hover:bg-border hover:text-text",
                 "transition-colors",
-                "disabled:opacity-50 disabled:cursor-not-allowed"
+                "disabled:cursor-not-allowed disabled:opacity-50"
               )}
             >
               Cancel
@@ -159,11 +159,11 @@ export function CreateRepoModal({
               type="submit"
               disabled={isCreating || !repoName.trim()}
               className={cn(
-                "flex-1 px-4 py-2.5 rounded-lg font-medium text-sm",
+                "flex-1 rounded-lg px-4 py-2.5 text-sm font-medium",
                 "bg-accent text-surface",
                 "hover:bg-accent/90",
                 "transition-colors",
-                "disabled:opacity-50 disabled:cursor-not-allowed"
+                "disabled:cursor-not-allowed disabled:opacity-50"
               )}
             >
               {isCreating ? "Creating..." : "Create Repository"}

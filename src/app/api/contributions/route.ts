@@ -5,7 +5,12 @@ import { NextResponse } from "next/server";
 export interface ContributionDay {
   date: string;
   contributionCount: number;
-  contributionLevel: "NONE" | "FIRST_QUARTILE" | "SECOND_QUARTILE" | "THIRD_QUARTILE" | "FOURTH_QUARTILE";
+  contributionLevel:
+    | "NONE"
+    | "FIRST_QUARTILE"
+    | "SECOND_QUARTILE"
+    | "THIRD_QUARTILE"
+    | "FOURTH_QUARTILE";
 }
 
 export interface ContributionWeek {
@@ -27,13 +32,15 @@ interface GraphQLResponse {
 
 export async function GET(request: Request) {
   const session = await auth();
-  
+
   if (!session?.accessToken || !session?.username) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { searchParams } = new URL(request.url);
-  const year = parseInt(searchParams.get("year") || String(new Date().getFullYear()));
+  const year = parseInt(
+    searchParams.get("year") || String(new Date().getFullYear())
+  );
 
   const graphqlWithAuth = graphql.defaults({
     headers: {
@@ -68,7 +75,9 @@ export async function GET(request: Request) {
       }
     );
 
-    return NextResponse.json(response.user.contributionsCollection.contributionCalendar);
+    return NextResponse.json(
+      response.user.contributionsCollection.contributionCalendar
+    );
   } catch (error) {
     console.error("Error fetching contributions:", error);
     return NextResponse.json(
@@ -77,4 +86,3 @@ export async function GET(request: Request) {
     );
   }
 }
-

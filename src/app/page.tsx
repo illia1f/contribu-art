@@ -14,12 +14,12 @@ export default async function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="flex min-h-screen flex-col">
       <Header
         username={session?.username}
         avatarUrl={session?.user?.image || undefined}
       />
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 sm:px-6 lg:px-8">
         <Dashboard session={session} />
       </main>
     </div>

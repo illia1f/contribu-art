@@ -6,8 +6,13 @@ import { SignOutIcon } from "@/components/icons/SignOutIcon";
 import { Logo } from "@/components/Logo";
 import { GitHubRepoLink } from "@/components/GitHubRepoLink";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import { Avatar } from "@base-ui/react/avatar";
-import { Menu } from "@base-ui/react/menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface HeaderProps {
   username?: string;
@@ -18,70 +23,60 @@ export function Header({ username, avatarUrl }: HeaderProps) {
   const isMobile = useIsMobile();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-surface-raised">
-      <div className="max-w-6xl mx-auto px-6 py-2 flex items-center justify-between">
+    <header className="border-border bg-surface-raised sticky top-0 z-50 w-full border-b">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-2">
         <Logo size={54} withText={!isMobile} variant="simple" />
 
         <div className="flex items-center gap-3">
           <GitHubRepoLink />
           {username && (
-            <Menu.Root>
-              <Menu.Trigger className="cursor-pointer rounded-full ring-offset-2 ring-offset-surface-raised transition-all hover:ring-2 hover:ring-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
-                <Avatar.Root className="w-9 h-9 rounded-full border-2 border-border flex items-center justify-center bg-surface-raised overflow-hidden transition-all hover:border-primary/50">
-                  {avatarUrl && (
-                    <Avatar.Image
-                      src={avatarUrl}
-                      alt={username}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                  <Avatar.Fallback>
-                    <GitHubIcon className="w-5 h-5" />
-                  </Avatar.Fallback>
-                </Avatar.Root>
-              </Menu.Trigger>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="ring-offset-surface-raised hover:ring-primary/50 focus-visible:ring-primary cursor-pointer rounded-full ring-offset-2 transition-all hover:ring-2 focus-visible:ring-2 focus-visible:outline-none">
+                <Avatar className="border-border bg-surface-raised hover:border-primary/50 h-9 w-9 border-2 transition-all">
+                  {avatarUrl && <AvatarImage src={avatarUrl} alt={username} />}
+                  <AvatarFallback>
+                    <GitHubIcon className="h-5 w-5" />
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
 
-              <Menu.Portal>
-                <Menu.Positioner align="end" sideOffset={8} className="z-50">
-                  <Menu.Popup className="min-w-48 rounded-lg border border-border bg-surface-raised shadow-lg py-1 origin-(--transform-origin) transition-[transform,opacity] data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
-                    {/* User info section */}
-                    <div className="px-3 py-2 border-b border-border">
-                      <div className="flex items-center gap-3">
-                        <Avatar.Root className="w-8 h-8 rounded-full border border-border flex items-center justify-center bg-surface overflow-hidden">
-                          {avatarUrl && (
-                            <Avatar.Image
-                              src={avatarUrl}
-                              alt={username}
-                              className="w-full h-full object-cover"
-                            />
-                          )}
-                          <Avatar.Fallback>
-                            <GitHubIcon className="w-4 h-4" />
-                          </Avatar.Fallback>
-                        </Avatar.Root>
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-text">
-                            {username}
-                          </span>
-                          <span className="text-xs text-text-muted">
-                            GitHub Account
-                          </span>
-                        </div>
-                      </div>
+              <DropdownMenuContent
+                align="end"
+                sideOffset={8}
+                className="min-w-48"
+              >
+                {/* User info section */}
+                <div className="border-border border-b px-3 py-2">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="border-border bg-surface h-8 w-8 border">
+                      {avatarUrl && (
+                        <AvatarImage src={avatarUrl} alt={username} />
+                      )}
+                      <AvatarFallback>
+                        <GitHubIcon className="h-4 w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <span className="text-text text-sm font-medium">
+                        {username}
+                      </span>
+                      <span className="text-text-muted text-xs">
+                        GitHub Account
+                      </span>
                     </div>
+                  </div>
+                </div>
 
-                    {/* Menu items */}
-                    <Menu.Item
-                      onClick={() => signOut()}
-                      className="flex items-center gap-2 px-3 py-2 text-sm text-text-muted cursor-pointer transition-colors hover:bg-surface hover:text-text focus-visible:bg-surface focus-visible:text-text focus-visible:outline-none"
-                    >
-                      <SignOutIcon className="w-4 h-4" />
-                      Sign out
-                    </Menu.Item>
-                  </Menu.Popup>
-                </Menu.Positioner>
-              </Menu.Portal>
-            </Menu.Root>
+                {/* Menu items */}
+                <DropdownMenuItem
+                  onClick={() => signOut()}
+                  className="text-text-muted hover:bg-surface hover:text-text focus-visible:bg-surface focus-visible:text-text flex cursor-pointer items-center gap-2 px-3 py-2 text-sm transition-colors focus-visible:outline-none"
+                >
+                  <SignOutIcon className="h-4 w-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
       </div>

@@ -9,11 +9,11 @@ export function LoginButton() {
     <button
       onClick={() => signIn("github")}
       className={cn(
-        "flex items-center gap-3 px-6 py-3 rounded-lg",
-        "bg-surface-raised border border-border",
+        "flex items-center gap-3 rounded-lg px-6 py-3",
+        "bg-surface-raised border-border border",
         "hover:bg-surface-overlay hover:border-accent/50",
         "transition-all duration-200",
-        "font-medium text-text"
+        "text-text font-medium"
       )}
     >
       <GitHubIcon />

@@ -3,6 +3,14 @@
 import { useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { format, parseISO } from "date-fns";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export interface ContributionDay {
   date: string;
@@ -28,19 +36,19 @@ interface ContributionGraphProps {
 }
 
 const levelColors: Record<string, string> = {
-  NONE: "bg-[#161b22]",
-  FIRST_QUARTILE: "bg-[#0e4429]",
-  SECOND_QUARTILE: "bg-[#006d32]",
-  THIRD_QUARTILE: "bg-[#26a641]",
-  FOURTH_QUARTILE: "bg-[#39d353]",
+  NONE: "bg-contrib-0",
+  FIRST_QUARTILE: "bg-contrib-1",
+  SECOND_QUARTILE: "bg-contrib-2",
+  THIRD_QUARTILE: "bg-contrib-3",
+  FOURTH_QUARTILE: "bg-contrib-4",
 };
 
 const paintColors: Record<number, string> = {
-  0: "bg-[#161b22]",
-  1: "bg-[#0e4429]",
-  2: "bg-[#006d32]",
-  3: "bg-[#26a641]",
-  4: "bg-[#39d353]",
+  0: "bg-contrib-0",
+  1: "bg-contrib-1",
+  2: "bg-contrib-2",
+  3: "bg-contrib-3",
+  4: "bg-contrib-4",
 };
 
 const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -124,64 +132,70 @@ export function ContributionGraph({
 
   if (isLoading) {
     return (
-      <div className="p-5 bg-surface-raised rounded-lg border border-border">
+      <div className="bg-background border-border rounded-lg border p-5">
         <div className="animate-pulse">
           <div className="overflow-x-auto">
-            <table className="border-collapse" style={{ borderSpacing: 0 }}>
-              <thead>
-                <tr>
-                  <td className="w-[30px]"></td>
+            <Table className="w-auto border-collapse border-none!">
+              <TableHeader className="border-none!">
+                <TableRow className="border-none! hover:bg-transparent!">
+                  <TableHead className="h-6 w-[30px] border-none! p-0" />
                   {Array.from({ length: 53 }).map((_, i) => (
-                    <td
+                    <TableHead
                       key={i}
-                      className="pb-1"
-                      style={{ width: CELL_WITH_GAP }}
+                      className="h-6 border-none! p-0"
+                      style={{ width: CELL_WITH_GAP, minWidth: CELL_WITH_GAP }}
                     >
                       {i % 4 === 0 && i < 50 && (
-                        <div className="h-2.5 w-full bg-surface-overlay rounded" />
+                        <div className="bg-muted h-2.5 w-full rounded" />
                       )}
-                    </td>
+                    </TableHead>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="border-none!">
                 {Array.from({ length: 7 }).map((_, dayIndex) => (
-                  <tr key={dayIndex}>
-                    <td className="pr-2 text-right align-middle">
+                  <TableRow
+                    key={dayIndex}
+                    className="h-[13px] border-none! hover:bg-transparent!"
+                  >
+                    <TableCell className="border-none! p-0 pr-2 text-right align-middle leading-[13px]">
                       {dayIndex % 2 === 1 && (
-                        <div className="h-2.5 w-6 bg-surface-overlay rounded ml-auto" />
+                        <div className="bg-muted ml-auto h-2.5 w-6 rounded" />
                       )}
-                    </td>
+                    </TableCell>
                     {Array.from({ length: 53 }).map((_, weekIndex) => (
-                      <td
+                      <TableCell
                         key={weekIndex}
+                        className="border-none! p-0"
                         style={{
-                          padding: CELL_GAP / 2,
+                          width: CELL_SIZE + CELL_GAP,
+                          height: CELL_SIZE + CELL_GAP,
                         }}
                       >
                         <div
-                          className="w-[10px] h-[10px] rounded-[2px] bg-surface-overlay"
+                          className="bg-muted h-[10px] w-[10px] rounded-[2px] ring-1 ring-white/10 ring-inset"
                           style={{
                             width: CELL_SIZE,
                             height: CELL_SIZE,
+                            margin: CELL_GAP / 2,
                           }}
                         />
-                      </td>
+                      </TableCell>
                     ))}
-                  </tr>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
-          <div className="flex items-center justify-end gap-1.5 mt-3">
-            <div className="h-2.5 w-6 bg-surface-overlay rounded" />
+          <div className="mt-3 flex items-center justify-end gap-1.5">
+            <div className="bg-muted h-2.5 w-6 rounded" />
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="w-[10px] h-[10px] rounded-[2px] bg-surface-overlay"
+                className="bg-muted h-[10px] w-[10px] rounded-[2px]"
               />
             ))}
-            <div className="h-2.5 w-6 bg-surface-overlay rounded" />
+            <div className="bg-muted h-2.5 w-6 rounded" />
           </div>
         </div>
       </div>
@@ -192,47 +206,51 @@ export function ContributionGraph({
 
   return (
     <div
-      className="p-5 bg-surface-raised rounded-lg border border-border select-none"
+      className="bg-background border-border rounded-lg border p-5 select-none"
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
       <div className="overflow-x-auto">
-        <table className="border-collapse" style={{ borderSpacing: 0 }}>
-          <thead>
-            <tr>
+        <Table className="w-auto border-collapse border-none!">
+          <TableHeader className="border-none!">
+            <TableRow className="border-none! hover:bg-transparent!">
               {/* Empty cell for day labels column */}
-              <td className="w-[30px]"></td>
+              <TableHead className="h-6 w-[30px] border-none! p-0" />
               {/* Month labels row */}
               {weeks.map((_, weekIndex) => {
                 const monthLabel = monthLabelsList.find(
                   (m) => m.index === weekIndex
                 );
                 return (
-                  <td
+                  <TableHead
                     key={weekIndex}
-                    className="text-xs text-text-muted font-normal pb-1"
+                    className="text-muted-foreground relative h-6 overflow-visible border-none! p-0 pb-1 text-[11px] font-normal"
                     style={{
                       width: CELL_WITH_GAP,
-                      fontSize: "11px",
+                      minWidth: CELL_WITH_GAP,
                     }}
                   >
-                    {monthLabel?.month || ""}
-                  </td>
+                    {monthLabel && (
+                      <span className="absolute bottom-1 left-0 whitespace-nowrap">
+                        {monthLabel.month}
+                      </span>
+                    )}
+                  </TableHead>
                 );
               })}
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHeader>
+          <TableBody className="border-none!">
             {/* Rows for each day of the week */}
             {[0, 1, 2, 3, 4, 5, 6].map((dayIndex) => (
-              <tr key={dayIndex}>
+              <TableRow
+                key={dayIndex}
+                className="h-[13px] border-none! hover:bg-transparent!"
+              >
                 {/* Day label */}
-                <td
-                  className="text-text-muted pr-2 text-right align-middle"
-                  style={{ fontSize: "11px" }}
-                >
+                <TableCell className="text-muted-foreground border-none! p-0 pr-2 text-right align-middle text-[11px] leading-[13px]">
                   {dayIndex % 2 === 1 ? dayLabels[dayIndex] : ""}
-                </td>
+                </TableCell>
                 {/* Cells for each week */}
                 {weeks.map((week, weekIndex) => {
                   const day = week.contributionDays.find((d) => {
@@ -242,14 +260,22 @@ export function ContributionGraph({
 
                   if (!day) {
                     return (
-                      <td
+                      <TableCell
                         key={`${weekIndex}-${dayIndex}`}
+                        className="border-none! p-0"
                         style={{
-                          width: CELL_SIZE,
-                          height: CELL_SIZE,
-                          padding: CELL_GAP / 2,
+                          width: CELL_SIZE + CELL_GAP,
+                          height: CELL_SIZE + CELL_GAP,
                         }}
-                      />
+                      >
+                        <div
+                          style={{
+                            width: CELL_SIZE,
+                            height: CELL_SIZE,
+                            margin: CELL_GAP / 2,
+                          }}
+                        />
+                      </TableCell>
                     );
                   }
 
@@ -260,10 +286,12 @@ export function ContributionGraph({
                     : levelColors[day.contributionLevel];
 
                   return (
-                    <td
+                    <TableCell
                       key={day.date}
+                      className="border-none! p-0"
                       style={{
-                        padding: CELL_GAP / 2,
+                        width: CELL_SIZE + CELL_GAP,
+                        height: CELL_SIZE + CELL_GAP,
                       }}
                     >
                       <button
@@ -271,38 +299,39 @@ export function ContributionGraph({
                         onMouseEnter={() => handleMouseEnter(day.date)}
                         className={cn(
                           "block rounded-[2px] transition-all duration-75",
-                          "outline outline-1 outline-offset-[-1px]",
+                          "ring-1 ring-inset",
                           displayColor,
                           isSelected
-                            ? "outline-yellow-400 outline-2"
-                            : "outline-[rgba(27,31,35,0.06)] dark:outline-[rgba(255,255,255,0.05)]",
-                          "hover:outline-[rgba(255,255,255,0.4)]"
+                            ? "relative z-10 ring-2 ring-yellow-400"
+                            : "ring-white/20 dark:ring-white/20",
+                          "hover:ring-white/45"
                         )}
                         style={{
                           width: CELL_SIZE,
                           height: CELL_SIZE,
+                          margin: CELL_GAP / 2,
                         }}
                         title={`${format(parseISO(day.date), "MMM d, yyyy")}: ${
                           day.contributionCount
                         } contributions${isSelected ? " (selected)" : ""}`}
                       />
-                    </td>
+                    </TableCell>
                   );
                 })}
-              </tr>
+              </TableRow>
             ))}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-end gap-1.5 mt-3 text-xs text-text-muted">
+      <div className="text-muted-foreground mt-3 flex items-center justify-end gap-1.5 text-xs">
         <span className="mr-1">Less</span>
         {[0, 1, 2, 3, 4].map((level) => (
           <div
             key={level}
             className={cn(
-              "rounded-[2px] outline outline-1 outline-offset-[-1px] outline-[rgba(255,255,255,0.05)]",
+              "rounded-[2px] ring-1 ring-white/20 ring-inset",
               paintColors[level]
             )}
             style={{ width: CELL_SIZE, height: CELL_SIZE }}

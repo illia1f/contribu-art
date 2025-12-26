@@ -123,10 +123,64 @@ npm run dev
 
 # Run tests
 npm test
-
-# Run linting
-npm run lint
 ```
+
+## Code Quality Tools
+
+This project uses **ESLint** and **Prettier** to ensure consistent code style across the codebase. Please make sure to run these tools before committing your changes.
+
+### ESLint
+
+ESLint is configured with Next.js recommended rules and Prettier integration to catch common issues and enforce best practices.
+
+```bash
+# Check for linting errors
+npm run lint
+
+# Automatically fix linting errors
+npm run lint:fix
+```
+
+### Prettier
+
+Prettier is used for consistent code formatting. The project includes `prettier-plugin-tailwindcss` for automatic Tailwind CSS class sorting.
+
+```bash
+# Format all files
+npm run format
+
+# Check formatting without making changes
+npm run format:check
+```
+
+### TypeScript
+
+TypeScript type checking is separate from ESLint. Use the following command to check for type errors:
+
+```bash
+# Check for type errors
+npm run type-check
+```
+
+### Commitlint
+
+Commit messages are validated using Commitlint to ensure they follow the [Conventional Commits](#commit-message-guidelines) format. If your commit message doesn't follow the guidelines, the commit will be rejected.
+
+You can use the interactive commit prompt to help write valid commit messages:
+
+```bash
+npm run commit
+```
+
+### Before Submitting a PR
+
+Please ensure the following before submitting your pull request:
+
+1. ✅ Run `npm run format` to format your code
+2. ✅ Run `npm run lint:fix` to fix any linting issues
+3. ✅ Ensure `npm run lint` passes without errors
+4. ✅ Ensure `npm run format:check` passes without errors
+5. ✅ Ensure `npm run type-check` passes without errors
 
 ## Pull Request Process
 

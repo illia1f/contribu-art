@@ -48,10 +48,10 @@ export function RepoSelector({
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2">
-        <label className="text-xs text-muted-foreground font-medium">
+        <label className="text-muted-foreground text-xs font-medium">
           Repository
         </label>
-        <div className="px-3 py-2 rounded-md bg-popover border border-border text-muted-foreground text-sm animate-pulse">
+        <div className="bg-popover border-border text-muted-foreground animate-pulse rounded-md border px-3 py-2 text-sm">
           Loading repositories...
         </div>
       </div>
@@ -61,7 +61,7 @@ export function RepoSelector({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <label className="text-xs text-muted-foreground font-medium">
+        <label className="text-muted-foreground text-xs font-medium">
           Repository
         </label>
         {onCreateClick && (
@@ -69,7 +69,7 @@ export function RepoSelector({
             type="button"
             onClick={onCreateClick}
             className={cn(
-              "text-xs text-accent hover:text-accent/80 font-medium",
+              "text-accent hover:text-accent/80 text-xs font-medium",
               "transition-colors"
             )}
           >
@@ -92,10 +92,10 @@ export function RepoSelector({
           <Combobox.Input
             placeholder="Search repositories..."
             className={cn(
-              "px-3 py-2 rounded-md w-full pr-10",
-              "bg-popover border border-border",
+              "w-full rounded-md px-3 py-2 pr-10",
+              "bg-popover border-border border",
               "text-foreground text-sm",
-              "focus:outline-none focus:ring-2 focus:ring-ring/50 focus:border-ring",
+              "focus:ring-ring/50 focus:border-ring focus:ring-2 focus:outline-none",
               "placeholder:text-muted-foreground"
             )}
           />
@@ -108,7 +108,7 @@ export function RepoSelector({
             )}
             aria-label="Open popup"
           >
-            <ChevronDownIcon className="w-4 h-4" />
+            <ChevronDownIcon className="h-4 w-4" />
           </Combobox.Trigger>
         </div>
 
@@ -121,18 +121,18 @@ export function RepoSelector({
           >
             <Combobox.Popup
               className={cn(
-                "bg-popover border border-border rounded-md shadow-lg",
+                "bg-popover border-border rounded-md border shadow-lg",
                 "w-[var(--anchor-width)]",
                 "max-h-[300px]",
                 "flex flex-col",
                 "overflow-hidden"
               )}
             >
-              <Combobox.Empty className="px-3 py-2 text-sm text-muted-foreground text-center">
+              <Combobox.Empty className="text-muted-foreground px-3 py-2 text-center text-sm">
                 No repositories found
               </Combobox.Empty>
 
-              <Combobox.List className="overflow-y-auto p-1 flex-1 min-h-0">
+              <Combobox.List className="min-h-0 flex-1 overflow-y-auto p-1">
                 {(item: string) => {
                   const repo = repositories.find((r) => r.full_name === item);
                   if (!repo) return null;
@@ -141,10 +141,10 @@ export function RepoSelector({
                       key={repo.id}
                       value={item}
                       className={cn(
-                        "px-3 py-2 rounded-md text-sm cursor-pointer",
+                        "cursor-pointer rounded-md px-3 py-2 text-sm",
                         "text-foreground",
                         "hover:bg-muted",
-                        "focus:outline-none focus:bg-muted",
+                        "focus:bg-muted focus:outline-none",
                         "data-[selected]:bg-primary/10 data-[selected]:text-primary",
                         "flex items-center justify-between gap-2"
                       )}
@@ -153,7 +153,7 @@ export function RepoSelector({
                         {repo.name} {repo.private ? "🔒" : ""}
                       </div>
                       <Combobox.ItemIndicator className="shrink-0">
-                        <CheckIcon className="w-4 h-4" />
+                        <CheckIcon className="h-4 w-4" />
                       </Combobox.ItemIndicator>
                     </Combobox.Item>
                   );
@@ -163,7 +163,7 @@ export function RepoSelector({
           </Combobox.Positioner>
         </Combobox.Portal>
       </Combobox.Root>
-      <p className="text-[10px] text-muted-foreground">
+      <p className="text-muted-foreground text-[10px]">
         Commits will be pushed here
       </p>
     </div>

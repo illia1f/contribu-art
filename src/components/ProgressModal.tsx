@@ -28,7 +28,8 @@ export function ProgressModal({
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = "Painting in progress! Your graph art will be incomplete if you leave.";
+      e.returnValue =
+        "Painting in progress! Your graph art will be incomplete if you leave.";
       return e.returnValue;
     };
 
@@ -47,25 +48,25 @@ export function ProgressModal({
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
 
       {/* Modal */}
-      <div className="relative bg-surface-raised border border-border rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl">
+      <div className="bg-surface-raised border-border relative mx-4 w-full max-w-md rounded-xl border p-8 shadow-2xl">
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="mb-6 flex items-center gap-3">
           {isDone ? (
             hasError ? (
-              <div className="w-10 h-10 rounded-full bg-danger/20 flex items-center justify-center">
+              <div className="bg-danger/20 flex h-10 w-10 items-center justify-center rounded-full">
                 <span className="text-xl">❌</span>
               </div>
             ) : (
-              <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
+              <div className="bg-accent/20 flex h-10 w-10 items-center justify-center rounded-full">
                 <span className="text-xl">✅</span>
               </div>
             )
           ) : (
-            <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center animate-pulse">
+            <div className="bg-accent/20 flex h-10 w-10 animate-pulse items-center justify-center rounded-full">
               <span className="text-xl">🎨</span>
             </div>
           )}
-          <h2 className="text-xl font-bold text-text">
+          <h2 className="text-text text-xl font-bold">
             {isDone
               ? hasError
                 ? "Painting Failed"
@@ -76,31 +77,31 @@ export function ProgressModal({
 
         {/* Progress bar */}
         <div className="mb-4">
-          <div className="h-3 bg-surface-overlay rounded-full overflow-hidden">
+          <div className="bg-surface-overlay h-3 overflow-hidden rounded-full">
             <div
               className={cn(
                 "h-full transition-all duration-300 ease-out",
                 hasError
                   ? "bg-danger"
-                  : "bg-gradient-to-r from-contrib-2 via-contrib-3 to-contrib-4"
+                  : "from-contrib-2 via-contrib-3 to-contrib-4 bg-gradient-to-r"
               )}
               style={{ width: `${percentage}%` }}
             />
           </div>
-          <div className="flex justify-between items-center mt-2">
-            <p className="text-sm text-text-muted">
+          <div className="mt-2 flex items-center justify-between">
+            <p className="text-text-muted text-sm">
               {progress} / {total} commits
             </p>
-            <p className="text-sm font-medium text-text">{percentage}%</p>
+            <p className="text-text text-sm font-medium">{percentage}%</p>
           </div>
         </div>
 
         {/* Status message */}
         <p
           className={cn(
-            "text-sm mb-6 p-3 rounded-lg",
+            "mb-6 rounded-lg p-3 text-sm",
             hasError
-              ? "bg-danger/10 text-danger border border-danger/20"
+              ? "bg-danger/10 text-danger border-danger/20 border"
               : "bg-surface-overlay text-text-muted"
           )}
         >
@@ -109,14 +110,14 @@ export function ProgressModal({
 
         {/* Warning */}
         {!isDone && (
-          <div className="bg-warning/10 border border-warning/30 rounded-lg p-4 mb-6">
+          <div className="bg-warning/10 border-warning/30 mb-6 rounded-lg border p-4">
             <div className="flex items-start gap-3">
               <span className="text-warning text-lg">⚠️</span>
               <div>
-                <p className="text-warning font-medium text-sm">
+                <p className="text-warning text-sm font-medium">
                   Do not close or refresh this page!
                 </p>
-                <p className="text-warning/80 text-xs mt-1">
+                <p className="text-warning/80 mt-1 text-xs">
                   The painting process will stop if you navigate away.
                 </p>
               </div>
@@ -130,7 +131,7 @@ export function ProgressModal({
             <button
               onClick={onClose}
               className={cn(
-                "flex-1 px-4 py-2.5 rounded-lg font-medium text-sm",
+                "flex-1 rounded-lg px-4 py-2.5 text-sm font-medium",
                 "bg-surface-overlay text-text-muted",
                 "hover:bg-border hover:text-text",
                 "transition-colors"
@@ -142,7 +143,7 @@ export function ProgressModal({
               <button
                 onClick={onViewProfile}
                 className={cn(
-                  "flex-1 px-4 py-2.5 rounded-lg font-medium text-sm",
+                  "flex-1 rounded-lg px-4 py-2.5 text-sm font-medium",
                   "bg-accent text-surface",
                   "hover:bg-accent/90",
                   "transition-colors"
@@ -157,4 +158,3 @@ export function ProgressModal({
     </div>
   );
 }
-
