@@ -70,6 +70,8 @@ export function Dashboard({ session }: DashboardProps) {
   useEffect(() => {
     const loadContributions = async () => {
       setIsLoadingGraph(true);
+      // Clear selections when year changes
+      setSelectedCells(new Map());
       try {
         const data = await fetchContributions(selectedYear);
         setWeeks(data.weeks || []);
@@ -82,8 +84,6 @@ export function Dashboard({ session }: DashboardProps) {
     };
 
     loadContributions();
-    // Clear selections when year changes
-    setSelectedCells(new Map());
   }, [selectedYear]);
 
   // Fetch repositories on mount

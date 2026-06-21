@@ -1,6 +1,6 @@
 # Contributing to Contribu-Art
 
-Thank you for your interest in contributing to Contribu-Art! 🎨
+Thank you for contributing to Contribu-Art. This guide describes the commit conventions, development setup, and pull request process for the project.
 
 ## Commit Message Guidelines
 
@@ -36,7 +36,7 @@ Each commit message consists of a **header**, an optional **body**, and an optio
 
 ### Examples
 
-#### Good Commit Messages ✅
+#### Good Commit Messages
 
 ```
 feat(graph): add color picker for contribution cells
@@ -116,13 +116,13 @@ The scope provides additional context about what part of the codebase is affecte
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Run development server
-npm run dev
+pnpm run dev
 
 # Run tests
-npm test
+pnpm test
 ```
 
 ## Code Quality Tools
@@ -135,10 +135,10 @@ ESLint is configured with Next.js recommended rules and Prettier integration to 
 
 ```bash
 # Check for linting errors
-npm run lint
+pnpm run lint
 
 # Automatically fix linting errors
-npm run lint:fix
+pnpm run lint:fix
 ```
 
 ### Prettier
@@ -147,10 +147,10 @@ Prettier is used for consistent code formatting. The project includes `prettier-
 
 ```bash
 # Format all files
-npm run format
+pnpm run format
 
 # Check formatting without making changes
-npm run format:check
+pnpm run format:check
 ```
 
 ### TypeScript
@@ -159,7 +159,7 @@ TypeScript type checking is separate from ESLint. Use the following command to c
 
 ```bash
 # Check for type errors
-npm run type-check
+pnpm run type-check
 ```
 
 ### Commitlint
@@ -169,18 +169,18 @@ Commit messages are validated using Commitlint to ensure they follow the [Conven
 You can use the interactive commit prompt to help write valid commit messages:
 
 ```bash
-npm run commit
+pnpm run commit
 ```
 
-### Before Submitting a PR
+### Before Submitting a Pull Request
 
-Please ensure the following before submitting your pull request:
+Ensure the following before submitting your pull request:
 
-1. ✅ Run `npm run format` to format your code
-2. ✅ Run `npm run lint:fix` to fix any linting issues
-3. ✅ Ensure `npm run lint` passes without errors
-4. ✅ Ensure `npm run format:check` passes without errors
-5. ✅ Ensure `npm run type-check` passes without errors
+1. Run `pnpm run format` to format your code.
+2. Run `pnpm run lint:fix` to resolve linting issues.
+3. Confirm `pnpm run lint` passes without errors.
+4. Confirm `pnpm run format:check` passes without errors.
+5. Confirm `pnpm run type-check` passes without errors.
 
 ## Pull Request Process
 
@@ -190,8 +190,6 @@ Please ensure the following before submitting your pull request:
 4. Make sure all tests pass
 5. Use a descriptive PR title following conventional commits format
 
-## Questions?
+## Questions
 
-Feel free to open an issue if you have any questions or need clarification on anything.
-
-Happy contributing! 🚀
+If you have questions or need clarification, please open an issue.

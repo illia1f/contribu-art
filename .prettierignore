@@ -7,7 +7,6 @@ out
 build
 
 # Package files
-package-lock.json
 pnpm-lock.yaml
 
 # Generated
