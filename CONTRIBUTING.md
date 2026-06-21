@@ -125,62 +125,25 @@ pnpm run dev
 pnpm test
 ```
 
-## Code Quality Tools
+## Code Quality
 
-This project uses **ESLint** and **Prettier** to ensure consistent code style across the codebase. Please make sure to run these tools before committing your changes.
+Husky runs these automatically on commit (see [Git Hooks](#git-hooks-husky)); run them manually anytime:
 
-### ESLint
+| Command                      | What it does                                   |
+| ---------------------------- | ---------------------------------------------- |
+| `pnpm run lint` / `lint:fix` | ESLint with Next.js rules (check / auto-fix)   |
+| `pnpm run format`            | Prettier formatting (+ Tailwind class sorting) |
+| `pnpm run type-check`        | TypeScript check (`tsc --noEmit`)              |
+| `pnpm run commit`            | Interactive prompt for a valid commit message  |
 
-ESLint is configured with Next.js recommended rules and Prettier integration to catch common issues and enforce best practices.
+### Git Hooks (Husky)
 
-```bash
-# Check for linting errors
-pnpm run lint
+[Husky](https://typicode.github.io/husky/) installs the hooks on `pnpm install` (via the `prepare` script) and enforces them automatically:
 
-# Automatically fix linting errors
-pnpm run lint:fix
-```
+- **`pre-commit`** — `lint-staged` on staged files (`eslint --fix` + `prettier --write`), then `pnpm run type-check`. The commit aborts if either fails.
+- **`commit-msg`** — validates the message with Commitlint ([Conventional Commits](#commit-message-guidelines)).
 
-### Prettier
-
-Prettier is used for consistent code formatting. The project includes `prettier-plugin-tailwindcss` for automatic Tailwind CSS class sorting.
-
-```bash
-# Format all files
-pnpm run format
-
-# Check formatting without making changes
-pnpm run format:check
-```
-
-### TypeScript
-
-TypeScript type checking is separate from ESLint. Use the following command to check for type errors:
-
-```bash
-# Check for type errors
-pnpm run type-check
-```
-
-### Commitlint
-
-Commit messages are validated using Commitlint to ensure they follow the [Conventional Commits](#commit-message-guidelines) format. If your commit message doesn't follow the guidelines, the commit will be rejected.
-
-You can use the interactive commit prompt to help write valid commit messages:
-
-```bash
-pnpm run commit
-```
-
-### Before Submitting a Pull Request
-
-Ensure the following before submitting your pull request:
-
-1. Run `pnpm run format` to format your code.
-2. Run `pnpm run lint:fix` to resolve linting issues.
-3. Confirm `pnpm run lint` passes without errors.
-4. Confirm `pnpm run format:check` passes without errors.
-5. Confirm `pnpm run type-check` passes without errors.
+CI re-runs the same checks, so avoid `--no-verify`.
 
 ## Pull Request Process
 

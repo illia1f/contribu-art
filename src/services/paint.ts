@@ -78,7 +78,10 @@ export async function paintContributions(
           // Log parse errors for debugging but don't break the stream
           console.warn("Failed to parse SSE event:", {
             line: line.substring(0, 100),
-            error: parseError instanceof Error ? parseError.message : String(parseError),
+            error:
+              parseError instanceof Error
+                ? parseError.message
+                : String(parseError),
           });
         }
       }

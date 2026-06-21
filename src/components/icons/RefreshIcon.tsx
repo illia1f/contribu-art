@@ -2,9 +2,7 @@ interface RefreshIconProps {
   className?: string;
 }
 
-export function RefreshIcon({
-  className = "w-4 h-4",
-}: RefreshIconProps) {
+export function RefreshIcon({ className = "w-4 h-4" }: RefreshIconProps) {
   return (
     <svg
       className={className}
