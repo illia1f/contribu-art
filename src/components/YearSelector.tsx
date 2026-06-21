@@ -29,7 +29,7 @@ export function YearSelector({
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs text-muted-foreground font-medium">Year</label>
+      <label className="text-muted-foreground text-xs font-medium">Year</label>
       <Select.Root
         value={selectedYear.toString()}
         onValueChange={(value) => {

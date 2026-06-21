@@ -65,12 +65,12 @@ export function ResultsPanel({
   onClearSelection,
 }: ResultsPanelProps) {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex h-full flex-col">
       {/* Graph Container */}
       <div className="flex-1">
         {/* Header with selection info */}
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-muted-foreground">
+        <div className="mb-4 flex items-center justify-between">
+          <p className="text-muted-foreground text-sm">
             Click and drag to select cells
           </p>
 
@@ -78,15 +78,15 @@ export function ResultsPanel({
             {/* Selection Info */}
             {selectedCells.size > 0 && (
               <>
-                <span className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">
+                <span className="text-muted-foreground text-sm">
+                  <span className="text-foreground font-medium">
                     {selectedCells.size}
                   </span>{" "}
                   {selectedCells.size === 1 ? "cell" : "cells"} selected
                 </span>
                 <button
                   onClick={onClearSelection}
-                  className="text-sm text-accent hover:text-accent/80 font-medium transition-colors"
+                  className="text-accent hover:text-accent/80 text-sm font-medium transition-colors"
                 >
                   Clear
                 </button>
@@ -112,26 +112,26 @@ export function ResultsPanel({
       </div>
 
       {/* Color Guide Section - Beneath the graph */}
-      <div className="mt-8 pt-6 border-t border-border">
-        <h3 className="text-sm font-medium text-foreground mb-4">
+      <div className="border-border mt-8 border-t pt-6">
+        <h3 className="text-foreground mb-4 text-sm font-medium">
           Contribution Levels
         </h3>
 
         {/* Color Level Pills */}
-        <div className="flex flex-wrap gap-3 mb-5">
+        <div className="mb-5 flex flex-wrap gap-3">
           {colorLevels.map((level) => (
             <div
               key={level.level}
               title={level.description}
-              className="flex items-center gap-2 px-3 py-1.5 bg-muted/30 rounded-full border border-border cursor-default"
+              className="bg-muted/30 border-border flex cursor-default items-center gap-2 rounded-full border px-3 py-1.5"
             >
               <div
-                className={`w-4 h-4 rounded-sm ${level.colorClass} border border-border-muted`}
+                className={`h-4 w-4 rounded-sm ${level.colorClass} border-border-muted border`}
               />
-              <span className="text-xs text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 {level.name}
               </span>
-              <span className="text-xs font-mono text-foreground/70">
+              <span className="text-foreground/70 font-mono text-xs">
                 {level.commits}
               </span>
             </div>
@@ -139,14 +139,14 @@ export function ResultsPanel({
         </div>
 
         {/* Warning Note */}
-        <div className="p-3 bg-warning/10 border border-warning/20 rounded-md">
+        <div className="bg-warning/10 border-warning/20 rounded-md border p-3">
           <div className="flex items-start gap-2">
-            <AlertTriangleIcon className="w-4 h-4 text-warning shrink-0 mt-0.5" />
+            <AlertTriangleIcon className="text-warning mt-0.5 h-4 w-4 shrink-0" />
             <div className="flex-1">
-              <div className="text-xs font-medium text-warning mb-1">
+              <div className="text-warning mb-1 text-xs font-medium">
                 Color Accuracy Note
               </div>
-              <div className="text-xs text-warning/90">
+              <div className="text-warning/90 text-xs">
                 GitHub uses a relative percentile-based system to determine
                 colors. The colors shown here may not exactly match your GitHub
                 profile as they depend on your personal contribution history.

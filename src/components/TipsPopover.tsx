@@ -8,7 +8,7 @@ const tips = [
   "Click a selected cell again to deselect it",
   "Create a dedicated repository for your contribution art to keep real projects clean",
   "Commits may take a few minutes to appear on your GitHub profile",
-  "Use \"All at once\" commit mode for faster painting, or \"Gradual\" to watch progress live",
+  'Use "All at once" commit mode for faster painting, or "Gradual" to watch progress live',
 ];
 
 export function TipsPopover() {
@@ -56,7 +56,7 @@ export function TipsPopover() {
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "flex items-center gap-1.5 px-2 py-1 text-xs rounded-md transition-colors",
+          "flex items-center gap-1.5 rounded-md px-2 py-1 text-xs transition-colors",
           isOpen
             ? "bg-accent/20 text-accent"
             : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
@@ -66,7 +66,7 @@ export function TipsPopover() {
       >
         {/* Info Icon */}
         <svg
-          className="w-4 h-4"
+          className="h-4 w-4"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -86,13 +86,13 @@ export function TipsPopover() {
         <div
           ref={popoverRef}
           className={cn(
-            "absolute right-0 top-full mt-2 z-50",
-            "w-80 p-4 bg-card rounded-lg border border-border shadow-lg",
+            "absolute top-full right-0 z-50 mt-2",
+            "bg-card border-border w-80 rounded-lg border p-4 shadow-lg",
             "animate-in fade-in-0 zoom-in-95 duration-200"
           )}
         >
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-foreground">
+          <div className="mb-3 flex items-center justify-between">
+            <h3 className="text-foreground text-sm font-semibold">
               Quick Tips
             </h3>
             <button
@@ -101,7 +101,7 @@ export function TipsPopover() {
               aria-label="Close tips"
             >
               <svg
-                className="w-4 h-4"
+                className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -119,7 +119,7 @@ export function TipsPopover() {
             {tips.map((tip, index) => (
               <li
                 key={index}
-                className="flex items-start gap-2 text-sm text-muted-foreground"
+                className="text-muted-foreground flex items-start gap-2 text-sm"
               >
                 <span className="text-accent mt-0.5 shrink-0">•</span>
                 <span>{tip}</span>
