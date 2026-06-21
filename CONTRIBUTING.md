@@ -127,7 +127,7 @@ pnpm test
 
 ## Code Quality Tools
 
-This project uses **ESLint** and **Prettier** to ensure consistent code style across the codebase. Please make sure to run these tools before committing your changes.
+This project uses **ESLint** and **Prettier** to ensure consistent code style across the codebase. These run automatically on commit via [Git hooks](#git-hooks-husky), but you can also run them manually.
 
 ### ESLint
 
@@ -171,6 +171,15 @@ You can use the interactive commit prompt to help write valid commit messages:
 ```bash
 pnpm run commit
 ```
+
+### Git Hooks (Husky)
+
+[Husky](https://typicode.github.io/husky/) enforces these checks automatically — no manual step required. The hooks install on `pnpm install` via the `prepare` script.
+
+- **`pre-commit`** — runs `lint-staged` on staged files (`eslint --fix` then `prettier --write`), followed by `pnpm run type-check` across the project. Auto-fixes are re-staged; the commit aborts if linting or type checks fail.
+- **`commit-msg`** — validates the message with Commitlint. A message that doesn't follow [Conventional Commits](#commit-message-guidelines) aborts the commit.
+
+Hooks run only what's relevant: `lint-staged` touches staged files, while `type-check` covers the whole project. Bypassing hooks (`--no-verify`) is discouraged — CI enforces the same checks.
 
 ### Before Submitting a Pull Request
 
