@@ -37,17 +37,17 @@ After registering, you'll see your app's settings page:
 
 ## Step 4: Configure Environment Variables
 
-Create a `.env.local` file in your project root:
+Copy the example file and fill in your values:
 
-```env
-# GitHub OAuth
-GITHUB_CLIENT_ID=your_client_id_here
-GITHUB_CLIENT_SECRET=your_client_secret_here
-
-# NextAuth Configuration
-NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=your_random_secret_here
+```bash
+cp .env.example .env.local
 ```
+
+`.env.example` is the canonical list of every variable the app reads. For this OAuth setup:
+
+- `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` — from [Step 3](#step-3-get-your-credentials)
+- `NEXTAUTH_SECRET` — generate using a command below
+- `NEXTAUTH_URL` — your app URL (`http://localhost:3000` for development)
 
 ### Generating NEXTAUTH_SECRET
 
@@ -89,7 +89,7 @@ When deploying to production:
 
 1. Update the **Homepage URL** to your production domain
 2. Update the **Authorization callback URL** to `https://yourdomain.com/api/auth/callback/github`
-3. Update `NEXTAUTH_URL` in your environment variables to your production URL
+3. Update `NEXTAUTH_URL` and `NEXT_PUBLIC_BASE_URL` in your environment variables to your production URL
 
 ## Troubleshooting
 

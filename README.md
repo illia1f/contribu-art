@@ -22,28 +22,28 @@ Select cells on a replica of your contribution graph, pick an intensity level, a
 
 ## Setup
 
-**Prerequisites:** Node.js 18+, a GitHub OAuth App
+**Prerequisites:** Node.js 18+, [pnpm](https://pnpm.io/installation), a GitHub OAuth App
 
 1. Clone and install:
 
    ```bash
    git clone https://github.com/yourusername/contribu-art.git
    cd contribu-art
-   npm install
+   pnpm install
    ```
 
-2. Create `.env.local`:
+2. Set up environment variables:
 
-   ```env
-   AUTH_GITHUB_ID=your_github_client_id
-   AUTH_GITHUB_SECRET=your_github_client_secret
-   AUTH_SECRET=any_random_string
+   ```bash
+   cp .env.example .env.local
    ```
+
+   Fill in the values in `.env.local`. See [GITHUB_SETUP.md](./GITHUB_SETUP.md) for how to obtain the GitHub OAuth credentials and generate `NEXTAUTH_SECRET`.
 
 3. Run:
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 See [GITHUB_SETUP.md](./GITHUB_SETUP.md) for OAuth app configuration.
