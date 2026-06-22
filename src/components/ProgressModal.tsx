@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { StarCallout } from "./StarCallout";
 
 interface ProgressModalProps {
   isOpen: boolean;
@@ -28,9 +29,6 @@ export function ProgressModal({
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue =
-        "Painting in progress! Your graph art will be incomplete if you leave.";
-      return e.returnValue;
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -124,6 +122,8 @@ export function ProgressModal({
             </div>
           </div>
         )}
+
+        {isDone && !hasError && <StarCallout />}
 
         {/* Actions */}
         {isDone && (
