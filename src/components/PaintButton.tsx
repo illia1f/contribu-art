@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@vercel/analytics";
 import { cn } from "@/lib/utils";
 
 interface PaintButtonProps {
@@ -13,10 +14,15 @@ export function PaintButton({
   disabled,
   selectedCount,
 }: PaintButtonProps) {
+  const handleClick = () => {
+    track("paint", { selectedCount });
+    onClick();
+  };
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className={cn(
         "w-full rounded-lg px-6 py-3 text-base font-medium",

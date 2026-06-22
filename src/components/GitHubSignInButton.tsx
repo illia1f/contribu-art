@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
+import { track } from "@vercel/analytics";
 import { cn } from "@/lib/utils";
 import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ export function GitHubSignInButton({ className }: { className?: string }) {
 
   const handleSignIn = async () => {
     setIsLoading(true);
+    track("sign_in", { provider: "github" });
     try {
       // Small delay to ensure the animation is visible before the redirect starts
       await signIn("github", { callbackUrl: "/" });

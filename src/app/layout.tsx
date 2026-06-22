@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "@/components/Providers";
 import { baseMetadata } from "@/config/metadata";
 import "./globals.css";
@@ -27,6 +28,7 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} bg-surface text-text font-sans antialiased`}
       >
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );
