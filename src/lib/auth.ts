@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import { track } from "@vercel/analytics/server";
 
 export const { handlers, auth } = NextAuth({
   trustHost: true,
@@ -40,6 +41,13 @@ export const { handlers, auth } = NextAuth({
         (token.accountCreatedYear as number | undefined) ??
         new Date().getFullYear();
       return session;
+    },
+  },
+  events: {
+    async signIn({ account }) {
+      await track("sign_in_success", {
+        provider: account?.provider ?? "unknown",
+      });
     },
   },
   pages: {
