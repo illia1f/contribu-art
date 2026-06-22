@@ -48,9 +48,9 @@ export function RepoSelector({
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2">
-        <label className="text-muted-foreground text-xs font-medium">
+        <span className="text-muted-foreground text-xs font-medium">
           Repository
-        </label>
+        </span>
         <div className="bg-popover border-border text-muted-foreground animate-pulse rounded-md border px-3 py-2 text-sm">
           Loading repositories...
         </div>
@@ -61,7 +61,10 @@ export function RepoSelector({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <label className="text-muted-foreground text-xs font-medium">
+        <label
+          htmlFor="repo-combobox-input"
+          className="text-muted-foreground text-xs font-medium"
+        >
           Repository
         </label>
         {onCreateClick && (
@@ -90,6 +93,7 @@ export function RepoSelector({
       >
         <div className="relative flex items-center">
           <Combobox.Input
+            id="repo-combobox-input"
             placeholder="Search repositories..."
             className={cn(
               "w-full rounded-md px-3 py-2 pr-10",

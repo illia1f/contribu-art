@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useEffectEvent } from "react";
 import { cn } from "@/lib/utils";
 import type { Repository } from "@/app/api/repos/route";
 import { createRepository } from "@/services/repos";
@@ -24,19 +24,21 @@ export function CreateRepoModal({
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const onEscape = useEffectEvent(() => {
+    if (!isCreating) onClose();
+  });
+
   // Close on Escape key
   useEffect(() => {
     if (!isOpen) return;
 
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !isCreating) {
-        onClose();
-      }
+      if (e.key === "Escape") onEscape();
     };
 
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
-  }, [isOpen, isCreating, onClose]);
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,9 +64,12 @@ export function CreateRepoModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-        onClick={!isCreating ? onClose : undefined}
+      <button
+        type="button"
+        aria-label="Close dialog"
+        onClick={onClose}
+        disabled={isCreating}
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm disabled:cursor-default"
       />
 
       {/* Modal */}

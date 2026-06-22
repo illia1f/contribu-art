@@ -54,7 +54,7 @@ export const baseMetadata: Metadata = {
 /**
  * Generate page-specific metadata
  */
-export function createMetadata(overrides: Partial<Metadata>): Metadata {
+function createMetadata(overrides: Partial<Metadata>): Metadata {
   return {
     ...baseMetadata,
     ...overrides,

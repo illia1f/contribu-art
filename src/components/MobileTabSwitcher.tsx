@@ -18,6 +18,7 @@ export function MobileTabSwitcher({
   return (
     <div className="border-border mb-4 flex border-b lg:hidden">
       <button
+        type="button"
         onClick={() => onTabChange("config")}
         className={cn(
           "relative flex-1 px-4 py-3 text-sm font-medium transition-colors",
@@ -32,6 +33,7 @@ export function MobileTabSwitcher({
         )}
       </button>
       <button
+        type="button"
         onClick={() => onTabChange("preview")}
         className={cn(
           "relative flex-1 px-4 py-3 text-sm font-medium transition-colors",

@@ -85,6 +85,7 @@ export function ResultsPanel({
                   {selectedCells.size === 1 ? "cell" : "cells"} selected
                 </span>
                 <button
+                  type="button"
                   onClick={onClearSelection}
                   className="text-accent hover:text-accent/80 text-sm font-medium transition-colors"
                 >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { format, parseISO } from "date-fns";
 import {
@@ -79,14 +79,28 @@ export function ContributionGraph({
   currentIntensity,
   isLoading,
 }: ContributionGraphProps) {
-  const [isMouseDown, setIsMouseDown] = useState(false);
-  const [paintMode, setPaintMode] = useState<"add" | "remove" | null>(null);
+  // Drag-paint tracking. These only drive event handlers and are never rendered,
+  // so refs avoid a re-render on every mouse move.
+  const isMouseDownRef = useRef(false);
+  const paintModeRef = useRef<"add" | "remove" | null>(null);
+
+  // End the drag wherever the mouse is released, not just over the graph.
+  // Registered once and cleaned up on unmount so a drag interrupted by an
+  // unmount can't leave a dangling listener.
+  useEffect(() => {
+    const stopPainting = () => {
+      isMouseDownRef.current = false;
+      paintModeRef.current = null;
+    };
+    window.addEventListener("mouseup", stopPainting);
+    return () => window.removeEventListener("mouseup", stopPainting);
+  }, []);
 
   const handleMouseDown = useCallback(
     (date: string) => {
-      setIsMouseDown(true);
       const isSelected = selectedCells.has(date);
-      setPaintMode(isSelected ? "remove" : "add");
+      isMouseDownRef.current = true;
+      paintModeRef.current = isSelected ? "remove" : "add";
       onCellToggle(date, currentIntensity);
     },
     [selectedCells, onCellToggle, currentIntensity]
@@ -94,22 +108,17 @@ export function ContributionGraph({
 
   const handleMouseEnter = useCallback(
     (date: string) => {
-      if (!isMouseDown || !paintMode) return;
+      if (!isMouseDownRef.current || !paintModeRef.current) return;
 
       const isSelected = selectedCells.has(date);
-      if (paintMode === "add" && !isSelected) {
+      if (paintModeRef.current === "add" && !isSelected) {
         onCellToggle(date, currentIntensity);
-      } else if (paintMode === "remove" && isSelected) {
+      } else if (paintModeRef.current === "remove" && isSelected) {
         onCellToggle(date, 0);
       }
     },
-    [isMouseDown, paintMode, selectedCells, onCellToggle, currentIntensity]
+    [selectedCells, onCellToggle, currentIntensity]
   );
-
-  const handleMouseUp = useCallback(() => {
-    setIsMouseDown(false);
-    setPaintMode(null);
-  }, []);
 
   // Get month labels for the header
   const getMonthLabels = () => {
@@ -207,11 +216,7 @@ export function ContributionGraph({
   const monthLabelsList = getMonthLabels();
 
   return (
-    <div
-      className="bg-background border-border rounded-lg border p-5 select-none"
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-    >
+    <div className="bg-background border-border rounded-lg border p-5 select-none">
       <div className="overflow-x-auto">
         <Table className="w-auto border-collapse border-none!">
           <TableHeader className="border-none!">
@@ -298,6 +303,13 @@ export function ContributionGraph({
                       }}
                     >
                       <button
+                        type="button"
+                        aria-label={`${format(
+                          parseISO(day.date),
+                          "MMM d, yyyy"
+                        )}: ${day.contributionCount} contributions${
+                          isSelected ? " (selected)" : ""
+                        }`}
                         onMouseDown={() => handleMouseDown(day.date)}
                         onMouseEnter={() => handleMouseEnter(day.date)}
                         className={cn(

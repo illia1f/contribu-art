@@ -61,6 +61,7 @@ function CollapsibleSection({
   return (
     <div className="border-border border-b last:border-b-0">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="hover:bg-muted/30 -mx-1 flex w-full items-center justify-between rounded px-1 py-3 text-left transition-colors"
       >
@@ -128,6 +129,7 @@ export function ConfigurationPanel({
                 </p>
               </div>
               <button
+                type="button"
                 onClick={() => onAutoModeChange(!autoMode)}
                 className={cn(
                   "focus:ring-primary focus:ring-offset-background relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 focus:outline-none",
@@ -135,6 +137,7 @@ export function ConfigurationPanel({
                 )}
                 role="switch"
                 aria-checked={autoMode}
+                aria-label="Toggle auto mode"
               >
                 <span
                   className={cn(
@@ -168,6 +171,7 @@ export function ConfigurationPanel({
                   />
                 </div>
                 <button
+                  type="button"
                   onClick={onRandomize}
                   className="border-border bg-background hover:bg-muted flex w-full items-center justify-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors"
                 >
