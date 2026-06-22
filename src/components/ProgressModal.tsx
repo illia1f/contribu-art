@@ -129,6 +129,7 @@ export function ProgressModal({
         {isDone && (
           <div className="flex gap-3">
             <button
+              type="button"
               onClick={onClose}
               className={cn(
                 "flex-1 rounded-lg px-4 py-2.5 text-sm font-medium",
@@ -141,6 +142,7 @@ export function ProgressModal({
             </button>
             {!hasError && (
               <button
+                type="button"
                 onClick={onViewProfile}
                 className={cn(
                   "flex-1 rounded-lg px-4 py-2.5 text-sm font-medium",

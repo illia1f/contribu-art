@@ -15,9 +15,19 @@ export function CommitModeToggle({
 }: CommitModeToggleProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-text-muted text-xs font-medium">Commit Mode</label>
-      <div className="bg-surface-overlay flex gap-1 rounded-lg p-1">
+      <span
+        id="commit-mode-label"
+        className="text-text-muted text-xs font-medium"
+      >
+        Commit Mode
+      </span>
+      <div
+        role="group"
+        aria-labelledby="commit-mode-label"
+        className="bg-surface-overlay flex gap-1 rounded-lg p-1"
+      >
         <button
+          type="button"
           onClick={() => onModeChange("transaction")}
           className={cn(
             "rounded-md px-3 py-1.5 text-xs font-medium transition-all",
@@ -30,6 +40,7 @@ export function CommitModeToggle({
           All at once
         </button>
         <button
+          type="button"
           onClick={() => onModeChange("incremental")}
           className={cn(
             "rounded-md px-3 py-1.5 text-xs font-medium transition-all",

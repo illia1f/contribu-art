@@ -15,6 +15,7 @@ export function PaintButton({
 }: PaintButtonProps) {
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={disabled}
       className={cn(

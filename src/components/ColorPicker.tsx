@@ -29,13 +29,21 @@ export function ColorPicker({
 }: ColorPickerProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-muted-foreground text-xs font-medium">
+      <span
+        id="intensity-label"
+        className="text-muted-foreground text-xs font-medium"
+      >
         Intensity
-      </label>
-      <div className="flex items-center gap-2">
+      </span>
+      <div
+        role="group"
+        aria-labelledby="intensity-label"
+        className="flex items-center gap-2"
+      >
         {[1, 2, 3, 4].map((intensity) => (
           <button
             key={intensity}
+            type="button"
             onClick={() => onIntensityChange(intensity)}
             title={`${
               intensityLabels[intensity]

@@ -28,17 +28,18 @@ export async function GET() {
       per_page: 100,
     });
 
-    // Filter out forks and map to simpler structure
-    const filteredRepos: Repository[] = repos
-      .filter((repo) => !repo.fork)
-      .map((repo) => ({
+    const filteredRepos: Repository[] = [];
+    for (const repo of repos) {
+      if (repo.fork) continue;
+      filteredRepos.push({
         id: repo.id,
         name: repo.name,
         full_name: repo.full_name,
         default_branch: repo.default_branch || "main",
         private: repo.private,
         fork: repo.fork,
-      }));
+      });
+    }
 
     return NextResponse.json(filteredRepos);
   } catch (error) {

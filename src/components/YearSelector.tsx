@@ -29,7 +29,12 @@ export function YearSelector({
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-muted-foreground text-xs font-medium">Year</label>
+      <label
+        htmlFor="year-select-trigger"
+        className="text-muted-foreground text-xs font-medium"
+      >
+        Year
+      </label>
       <Select.Root
         value={selectedYear.toString()}
         onValueChange={(value) => {
@@ -39,6 +44,7 @@ export function YearSelector({
         onOpenChange={setOpen}
       >
         <Select.Trigger
+          id="year-select-trigger"
           className={cn(
             "rounded-md px-3 py-2",
             "bg-card border-border border",

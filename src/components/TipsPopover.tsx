@@ -54,6 +54,7 @@ export function TipsPopover() {
     <div className="relative">
       <button
         ref={buttonRef}
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "flex items-center gap-1.5 rounded-md px-2 py-1 text-xs transition-colors",
@@ -96,6 +97,7 @@ export function TipsPopover() {
               Quick Tips
             </h3>
             <button
+              type="button"
               onClick={() => setIsOpen(false)}
               className="text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Close tips"
