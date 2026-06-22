@@ -1,22 +1,10 @@
 "use client";
 
-import { ContributionGraph, ContributionWeek } from "./ContributionGraph";
+import { ContributionGraph } from "./ContributionGraph";
 import { AlertTriangleIcon } from "@/components/icons/AlertTriangleIcon";
 import { TipsPopover } from "./TipsPopover";
-
-interface ResultsPanelProps {
-  // Graph data
-  weeks: ContributionWeek[];
-  isLoadingGraph: boolean;
-
-  // Selection state
-  selectedCells: Map<string, number>;
-  onCellToggle: (date: string, intensity: number) => void;
-  currentIntensity: number;
-
-  // Selection actions
-  onClearSelection: () => void;
-}
+import { useDashboardData } from "@/providers/DashboardDataProvider";
+import { useDashboardSelection } from "@/providers/DashboardSelectionProvider";
 
 const colorLevels = [
   {
@@ -56,14 +44,15 @@ const colorLevels = [
   },
 ];
 
-export function ResultsPanel({
-  weeks,
-  isLoadingGraph,
-  selectedCells,
-  onCellToggle,
-  currentIntensity,
-  onClearSelection,
-}: ResultsPanelProps) {
+export function ResultsPanel() {
+  const { weeks, isLoadingGraph } = useDashboardData();
+  const {
+    selectedCells,
+    toggleCell: onCellToggle,
+    intensity: currentIntensity,
+    clear: onClearSelection,
+  } = useDashboardSelection();
+
   return (
     <div className="flex h-full flex-col">
       {/* Graph Container */}

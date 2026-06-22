@@ -4,46 +4,16 @@ import { useState } from "react";
 import { YearSelector } from "./YearSelector";
 import { ColorPicker } from "./ColorPicker";
 import { RepoSelector } from "./RepoSelector";
-import { CommitModeToggle, type CommitMode } from "./CommitModeToggle";
+import { CommitModeToggle } from "./CommitModeToggle";
 import { PaintButton } from "./PaintButton";
-import type { Repository } from "@/app/api/repos/route";
 import { cn } from "@/lib/utils";
 import { Slider } from "./ui/slider";
 import { ChevronDownIcon } from "./icons/ChevronDownIcon";
 import { RefreshIcon } from "./icons/RefreshIcon";
-
-interface ConfigurationPanelProps {
-  // Year settings
-  selectedYear: number;
-  onYearChange: (year: number) => void;
-  accountCreatedYear?: number;
-
-  // Color/intensity settings
-  selectedIntensity: number;
-  onIntensityChange: (intensity: number) => void;
-
-  // Repository settings
-  repositories: Repository[];
-  selectedRepo: string | null;
-  onRepoChange: (repo: string) => void;
-  isLoadingRepos: boolean;
-  onCreateRepoClick: () => void;
-
-  // Commit mode settings
-  commitMode: CommitMode;
-  onCommitModeChange: (mode: CommitMode) => void;
-
-  // Paint action
-  onPaint: () => void;
-  selectedCellCount: number;
-
-  // Auto mode settings
-  autoMode: boolean;
-  onAutoModeChange: (enabled: boolean) => void;
-  onRandomize: () => void;
-  fillDensity: number;
-  onFillDensityChange: (density: number) => void;
-}
+import { useDashboardData } from "@/providers/DashboardDataProvider";
+import { useDashboardEditor } from "@/providers/DashboardEditorProvider";
+import { useDashboardSelection } from "@/providers/DashboardSelectionProvider";
+import { useDashboardPaint } from "@/providers/DashboardPaintProvider";
 
 interface CollapsibleSectionProps {
   title: string;
@@ -85,27 +55,35 @@ function CollapsibleSection({
   );
 }
 
-export function ConfigurationPanel({
-  selectedYear,
-  onYearChange,
-  accountCreatedYear,
-  selectedIntensity,
-  onIntensityChange,
-  repositories,
-  selectedRepo,
-  onRepoChange,
-  isLoadingRepos,
-  onCreateRepoClick,
-  commitMode,
-  onCommitModeChange,
-  onPaint,
-  selectedCellCount,
-  autoMode,
-  onAutoModeChange,
-  onRandomize,
-  fillDensity,
-  onFillDensityChange,
-}: ConfigurationPanelProps) {
+export function ConfigurationPanel() {
+  const {
+    year: selectedYear,
+    setYear: onYearChange,
+    repositories,
+    isLoadingRepos,
+  } = useDashboardData();
+  const {
+    accountCreatedYear,
+    selectedRepo,
+    setSelectedRepo: onRepoChange,
+    openCreateModal: onCreateRepoClick,
+    commitMode,
+    setCommitMode: onCommitModeChange,
+  } = useDashboardEditor();
+  const {
+    intensity: selectedIntensity,
+    setIntensity: onIntensityChange,
+    selectedCells,
+    autoMode,
+    setAutoMode: onAutoModeChange,
+    randomize: onRandomize,
+    fillDensity,
+    setFillDensity: onFillDensityChange,
+  } = useDashboardSelection();
+  const { paint: onPaint } = useDashboardPaint();
+
+  const selectedCellCount = selectedCells.size;
+
   return (
     <div className="flex h-full flex-col">
       {/* Scrollable Content */}
